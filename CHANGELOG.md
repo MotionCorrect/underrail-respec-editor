@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.0.2 - Beta
+
+### Added
+
+- Windows portable folder zip built with PyInstaller.
+- Static-exported Next.js frontend bundled into the Python server.
+- Same-origin API mode for packaged/local static UI.
+- Portable launcher entrypoint that opens the browser automatically.
+
+### Changed
+
+- CI remains disabled for pull requests; it runs only on pushes to `main` and manual dispatch.
+- Release workflow now builds source zip, Python wheel/sdist, and Windows portable zip.
+
 ## v0.0.1 - Beta
 
 Initial open-source beta release.

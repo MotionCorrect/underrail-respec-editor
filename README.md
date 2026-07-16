@@ -4,7 +4,7 @@ Open-source local save editor for **Underrail** focused on safe character respec
 
 The tool reads an Underrail save folder or `global.dat`, lets you visually reallocate base attributes and skill points, validates selected feat prerequisites, and writes changes only to a cloned save folder.
 
-> Status: **beta / v0.0.1**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
+> Status: **beta / v0.0.2**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
 
 ## Goals
 
@@ -162,16 +162,16 @@ GitHub Actions workflows are included:
 
 ## Packaging / release
 
-For release `0.0.1`, packaging is intentionally simple: a source zip with Python backend, Next.js frontend, docs, tests, and fixture data.
+For release `0.0.2`, packaging includes a source zip, Python wheel/sdist, and a Windows portable folder zip with the static UI bundled into the executable distribution.
 
 Create a release locally:
 
 ```bash
-git tag v0.0.1
-git push origin v0.0.1
+git tag v0.0.2
+git push origin v0.0.2
 ```
 
-The GitHub release workflow uploads an `underrail-respec-editor-v0.0.1.zip` artifact plus Python wheel/sdist artifacts.
+The GitHub release workflow uploads a source zip, Windows portable zip, and Python wheel/sdist artifacts.
 
 ## License
 

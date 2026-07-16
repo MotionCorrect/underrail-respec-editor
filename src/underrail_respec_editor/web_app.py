@@ -20,11 +20,14 @@ by save_tool.py. Feats and unspent-point storage are not modified.
 from __future__ import annotations
 import gzip
 import json
+import mimetypes
 import os
 import shutil
 import sys
+import threading
 import time
 import traceback
+import webbrowser
 from datetime import datetime
 
 from dataclasses import dataclass
@@ -42,6 +45,47 @@ DATA_DIR = PACKAGE_ROOT / "data"
 FEAT_IDS_PATH = DATA_DIR / "feat_ids.json"
 FEAT_RULES_PATH = DATA_DIR / "feat_rules.json"
 TOOLTIPS_PATH = DATA_DIR / "wiki_tooltips.json"
+STATIC_PREFIX = "/_next/"
+
+
+def bundled_root() -> Path:
+    return Path(getattr(sys, "_MEIPASS", PACKAGE_ROOT))
+
+
+def frontend_out_dir() -> Optional[Path]:
+    env_dir = os.environ.get("UNDERAIL_RESPEC_FRONTEND_DIR")
+    candidates = []
+    if env_dir:
+        candidates.append(Path(env_dir))
+    candidates.extend([
+        bundled_root() / "underrail_respec_editor" / "frontend" / "out",
+        PACKAGE_ROOT / "frontend" / "out",
+        PACKAGE_ROOT.parents[1] / "frontend" / "out",
+    ])
+    for candidate in candidates:
+        if (candidate / "index.html").is_file():
+            return candidate
+    return None
+
+
+def static_file_for_url(path: str) -> Optional[Path]:
+    root = frontend_out_dir()
+    if root is None:
+        return None
+    rel = path.lstrip("/") or "index.html"
+    if rel.endswith("/"):
+        rel += "index.html"
+    candidate = (root / rel).resolve()
+    try:
+        candidate.relative_to(root.resolve())
+    except ValueError:
+        return None
+    if candidate.is_file():
+        return candidate
+    html_fallback = candidate.with_suffix(".html")
+    if html_fallback.is_file():
+        return html_fallback
+    return None
 
 # Visible in the supplied screenshots. Feat storage itself is not mapped, so the
 # app lets the user select/adjust this list manually before validation.
@@ -591,6 +635,16 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(raw)
 
+    def _send_file(self, path: Path) -> None:
+        raw = path.read_bytes()
+        content_type = mimetypes.guess_type(str(path))[0] or "application/octet-stream"
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(raw)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(raw)
+
     def do_OPTIONS(self) -> None:  # noqa: N802
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -609,15 +663,19 @@ class Handler(BaseHTTPRequestHandler):
             parsed = urlparse(self.path)
             path = parsed.path
             query = parse_qs(parsed.query)
-            if path == "/" or path == "/index.html":
-                self._send(200, INDEX_HTML, "text/html")
-            elif path == "/api/list-saves":
+            if path == "/api/list-saves":
                 sort = (query.get("sort") or ["alpha"])[0]
                 self._send(200, {"saves": list_save_folders(sort=sort), "sort": sort})
             elif path == "/api/health":
-                self._send(200, {"ok": True})
+                self._send(200, {"ok": True, "frontend": str(frontend_out_dir()) if frontend_out_dir() else "legacy"})
             else:
-                self._send(404, {"error": "Not found"})
+                static_file = static_file_for_url(path)
+                if static_file:
+                    self._send_file(static_file)
+                elif path == "/" or path == "/index.html":
+                    self._send(200, INDEX_HTML, "text/html")
+                else:
+                    self._send(404, {"error": "Not found"})
         except Exception as exc:  # pragma: no cover - server safety net
             self._send(500, {"error": str(exc), "trace": traceback.format_exc()})
 
@@ -651,10 +709,19 @@ class Handler(BaseHTTPRequestHandler):
 
 def main(argv: Optional[List[str]] = None) -> None:
     argv = list(sys.argv[1:] if argv is None else argv)
+    open_browser = False
+    if "--open-browser" in argv:
+        open_browser = True
+        argv.remove("--open-browser")
     port = int(argv[0]) if argv else DEFAULT_PORT
+    url = f"http://127.0.0.1:{port}"
     server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    print(f"Underrail Visual Respec Editor running at http://127.0.0.1:{port}")
+    print(f"Underrail Visual Respec Editor running at {url}")
+    frontend_dir = frontend_out_dir()
+    print(f"Frontend: {frontend_dir if frontend_dir else 'legacy embedded HTML'}")
     print("Press Ctrl+C to stop.")
+    if open_browser:
+        threading.Timer(0.5, lambda: webbrowser.open(url)).start()
     server.serve_forever()
 
 

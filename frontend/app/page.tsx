@@ -21,7 +21,7 @@ type AnalyzeState = {
 
 type HoverInfo = { title: string; text: string; kind?: string } | null;
 
-const API = process.env.NEXT_PUBLIC_UNDERAIL_API || 'http://127.0.0.1:8765';
+const API = process.env.NEXT_PUBLIC_UNDERAIL_API || '';
 const ATTRS: AttrName[] = ['Strength','Dexterity','Agility','Constitution','Perception','Will','Intelligence'];
 const SKILLS = ['Guns','Heavy Guns','Throwing','Crossbows','Melee','Dodge','Evasion','Stealth','Hacking','Lockpicking','Pickpocketing','Traps','Mechanics','Electronics','Chemistry','Biology','Tailoring','Thought Control','Psychokinesis','Metathermics','Temporal Manipulation','Persuasion','Intimidation','Mercantile'];
 const SKILL_GROUPS = [
@@ -92,7 +92,7 @@ export default function Page() {
   const [skillBudget, setSkillBudget] = useState(0);
   const [ignoreBudget, setIgnoreBudget] = useState(false);
   const [newName, setNewName] = useState('');
-  const [message, setMessage] = useState('Start the Python backend on port 8765, then list or load a save.');
+  const [message, setMessage] = useState('List or load a save. In portable mode, the bundled Python API is already running.');
   const [validation, setValidation] = useState<any>(null);
 
   const featList = useMemo(() => state ? Array.from(new Set([...(state.all_known_feats || []), ...(state.detected_feats || [])])).sort() : [], [state]);
@@ -159,7 +159,7 @@ export default function Page() {
           <div className="eyebrow">Local save editor</div>
           <h1>Underrail Visual Respec Editor</h1>
         </div>
-        <div className="statusPill">Python API: {API}</div>
+        <div className="statusPill">Python API: {API || 'same-origin'}</div>
       </header>
 
       <section className="loadPanel gamePanel">
