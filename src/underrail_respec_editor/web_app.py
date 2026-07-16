@@ -2,8 +2,7 @@ r"""
 Local visual Underrail respec web app.
 
 Run:
-    cd C:\Git\underrail_edit
-    python underrail_webapp.py
+    python -m underrail_respec_editor.web_app
 
 Open:
     http://127.0.0.1:8765
@@ -15,7 +14,7 @@ Safety model:
     * validates point neutrality, legal caps, and known feat prerequisites
 
 This app intentionally edits only the 7 attributes and 24 skills already verified
-by underrail_savetool.py. Feats and unspent-point storage are not modified.
+by save_tool.py. Feats and unspent-point storage are not modified.
 """
 
 from __future__ import annotations
@@ -34,14 +33,15 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.parse import parse_qs, urlparse
 
-from underrail_savetool import ATTRS, SKILLS, Save
+from .save_tool import ATTRS, SKILLS, Save
 
 DEFAULT_PORT = 8765
 DEFAULT_SAVES_DIR = Path.home() / "Documents" / "My Games" / "Underrail" / "Saves"
-ROOT = Path(__file__).resolve().parent
-FEAT_IDS_PATH = ROOT / "feat_ids.json"
-FEAT_RULES_PATH = ROOT / "feat_rules.json"
-TOOLTIPS_PATH = ROOT / "wiki_tooltips.json"
+PACKAGE_ROOT = Path(__file__).resolve().parent
+DATA_DIR = PACKAGE_ROOT / "data"
+FEAT_IDS_PATH = DATA_DIR / "feat_ids.json"
+FEAT_RULES_PATH = DATA_DIR / "feat_rules.json"
+TOOLTIPS_PATH = DATA_DIR / "wiki_tooltips.json"
 
 # Visible in the supplied screenshots. Feat storage itself is not mapped, so the
 # app lets the user select/adjust this list manually before validation.

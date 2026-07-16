@@ -5,7 +5,7 @@ Thanks for helping improve Underrail Respec Editor.
 ## Development setup
 
 ```bash
-python -m unittest -v test_underrail_webapp.py test_next_frontend.py
+python -m unittest -v tests/test_underrail_webapp.py tests/test_next_frontend.py
 cd frontend
 npm ci
 npm run build
@@ -26,3 +26,7 @@ Prefer small controlled save diffs and regression fixtures. If adding support fo
 - what changed in-game
 - before/after fixture or documented offset evidence
 - safety checks that refuse to guess when records do not match expected structure
+
+## Reference credit
+
+If you add reverse-engineering detail based on community notes, prior agent work, posts, or supplied saves, update `docs/ACKNOWLEDGMENTS.md` and `docs/REVERSE_ENGINEERING.md` so the source of the head start is visible.

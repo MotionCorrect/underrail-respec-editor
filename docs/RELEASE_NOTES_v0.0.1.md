@@ -23,7 +23,7 @@ This is the first public beta release.
 Download the source zip, then run:
 
 ```bash
-python underrail_webapp.py 8765
+python -m underrail_respec_editor.web_app 8765
 cd frontend
 npm install
 npm run dev

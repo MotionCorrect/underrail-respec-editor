@@ -14,7 +14,8 @@ import urllib.request
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
-ROOT = Path(__file__).resolve().parent
+PACKAGE_ROOT = Path(__file__).resolve().parent
+DATA_DIR = PACKAGE_ROOT / "data"
 API = "https://www.stygiansoftware.com/wiki/api.php"
 ATTRS = {"Strength", "Dexterity", "Agility", "Constitution", "Perception", "Will", "Intelligence"}
 SKILLS = {
@@ -231,10 +232,11 @@ def main() -> None:
         except Exception as e:
             failures.append({"title": title, "error": str(e)})
             print(f"ERROR {title}: {e}")
-    (ROOT / "feat_rules.json").write_text(json.dumps(rules, indent=2, sort_keys=True), encoding="utf-8")
-    (ROOT / "feat_ids.json").write_text(json.dumps(ids, indent=2, sort_keys=True), encoding="utf-8")
-    (ROOT / "wiki_tooltips.json").write_text(json.dumps(tooltips, indent=2, sort_keys=True), encoding="utf-8")
-    (ROOT / "feat_crawl_report.json").write_text(json.dumps({"count": len(rules), "failures": failures}, indent=2), encoding="utf-8")
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    (DATA_DIR / "feat_rules.json").write_text(json.dumps(rules, indent=2, sort_keys=True), encoding="utf-8")
+    (DATA_DIR / "feat_ids.json").write_text(json.dumps(ids, indent=2, sort_keys=True), encoding="utf-8")
+    (DATA_DIR / "wiki_tooltips.json").write_text(json.dumps(tooltips, indent=2, sort_keys=True), encoding="utf-8")
+    (DATA_DIR / "feat_crawl_report.json").write_text(json.dumps({"count": len(rules), "failures": failures}, indent=2), encoding="utf-8")
     print(f"Wrote {len(rules)} rules, {len(ids)} ids; failures={len(failures)}")
 
 

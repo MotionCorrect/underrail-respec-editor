@@ -4,14 +4,17 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import underrail_webapp as app
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from underrail_respec_editor import web_app as app
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
+FIXTURES = ROOT / "data" / "fixtures"
 
 
 class UnderrailWebAppTests(unittest.TestCase):
     def test_analyze_reference_dat_reports_attributes_skills_and_feats(self):
-        result = app.analyze_target(ROOT / "jetski_global.dat")
+        result = app.analyze_target(FIXTURES / "jetski_global.dat")
         self.assertEqual(result["attributes"]["Strength"]["base"], 7)
         self.assertEqual(result["attributes"]["Agility"]["modified"], 8)
         self.assertEqual(result["skills"]["Crossbows"]["allocated"], 65)
@@ -25,7 +28,7 @@ class UnderrailWebAppTests(unittest.TestCase):
         self.assertIn("Marksman", result["detected_feats"])
 
     def test_validate_respec_catches_budget_and_feat_breakage(self):
-        current = app.analyze_target(ROOT / "jetski_global.dat")
+        current = app.analyze_target(FIXTURES / "jetski_global.dat")
         proposed_attrs = {k: v["base"] for k, v in current["attributes"].items()}
         proposed_skills = {k: v["allocated"] for k, v in current["skills"].items()}
         proposed_attrs["Dexterity"] = 4
@@ -36,7 +39,7 @@ class UnderrailWebAppTests(unittest.TestCase):
         self.assertTrue(any(item.get("feat") == "Marksman" for item in validation["issues"]))
 
     def test_validate_point_neutral_change_can_pass(self):
-        current = app.analyze_target(ROOT / "assault_global.dat")
+        current = app.analyze_target(FIXTURES / "assault_global.dat")
         proposed_attrs = {k: v["base"] for k, v in current["attributes"].items()}
         proposed_skills = {k: v["allocated"] for k, v in current["skills"].items()}
         proposed_attrs["Strength"] -= 1
@@ -45,7 +48,7 @@ class UnderrailWebAppTests(unittest.TestCase):
         self.assertTrue(validation["valid"], json.dumps(validation["issues"], indent=2))
 
     def test_concussive_shots_requires_crossbows_not_guns(self):
-        current = app.analyze_target(ROOT / "jetski_global.dat")
+        current = app.analyze_target(FIXTURES / "jetski_global.dat")
         proposed_attrs = {k: v["base"] for k, v in current["attributes"].items()}
         proposed_skills = {k: v["allocated"] for k, v in current["skills"].items()}
         proposed_skills["Guns"] = 0
@@ -59,7 +62,7 @@ class UnderrailWebAppTests(unittest.TestCase):
         self.assertTrue(any("requires Crossbows >= 30" in item["message"] for item in validation["issues"]))
 
     def test_negative_values_are_blocked_even_in_cheat_budget_mode(self):
-        current = app.analyze_target(ROOT / "jetski_global.dat")
+        current = app.analyze_target(FIXTURES / "jetski_global.dat")
         proposed_attrs = {k: v["base"] for k, v in current["attributes"].items()}
         proposed_skills = {k: v["allocated"] for k, v in current["skills"].items()}
         proposed_attrs["Strength"] = -1
@@ -70,7 +73,7 @@ class UnderrailWebAppTests(unittest.TestCase):
         self.assertTrue(any(item["type"] == "skill_range" for item in validation["issues"]))
 
     def test_cheat_budget_mode_disables_remaining_point_checks_only(self):
-        current = app.analyze_target(ROOT / "jetski_global.dat")
+        current = app.analyze_target(FIXTURES / "jetski_global.dat")
         proposed_attrs = {k: v["base"] for k, v in current["attributes"].items()}
         proposed_skills = {k: v["allocated"] for k, v in current["skills"].items()}
         proposed_attrs["Strength"] += 5
@@ -94,12 +97,12 @@ class UnderrailWebAppTests(unittest.TestCase):
         self.assertIn("muscle power", app.TOOLTIPS["attributes"]["Strength"].lower())
         self.assertIn("precision", app.TOOLTIPS["skills"]["Guns"].lower())
         self.assertIn("crossbow", app.TOOLTIPS["feats"]["Concussive Shots"].lower())
-        result = app.analyze_target(ROOT / "jetski_global.dat")
+        result = app.analyze_target(FIXTURES / "jetski_global.dat")
         self.assertIn("tooltips", result)
         self.assertIn("Strength", result["tooltips"]["attributes"])
 
     def test_level_requirement_validation_uses_crawled_rules(self):
-        current = app.analyze_target(ROOT / "jetski_global.dat")
+        current = app.analyze_target(FIXTURES / "jetski_global.dat")
         attrs = {k: v["base"] for k, v in current["attributes"].items()}
         skills = {k: v["allocated"] for k, v in current["skills"].items()}
         skills["Thought Control"] = 100
@@ -108,13 +111,13 @@ class UnderrailWebAppTests(unittest.TestCase):
         self.assertTrue(any("requires level >= 26" in item["message"] for item in validation["issues"]))
 
     def test_feat_records_are_read_from_save_payload(self):
-        jetski = app.read_feat_records(ROOT / "jetski_global.dat")
+        jetski = app.read_feat_records(FIXTURES / "jetski_global.dat")
         ids = [r["feat_id"] for r in jetski]
         self.assertIn("fastmetabolism", ids)
         self.assertIn("concussiveshots", ids)
         self.assertIn("versatility", ids)
 
-        assault = app.read_feat_records(ROOT / "assault_global.dat")
+        assault = app.read_feat_records(FIXTURES / "assault_global.dat")
         assault_ids = [r["feat_id"] for r in assault]
         self.assertIn("fastmetabolism", assault_ids)
         self.assertNotIn("concussiveshots", assault_ids)
@@ -123,7 +126,7 @@ class UnderrailWebAppTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             src = Path(td) / "SourceSave"
             src.mkdir()
-            original = (ROOT / "assault_global.dat").read_bytes()
+            original = (FIXTURES / "assault_global.dat").read_bytes()
             (src / "global.dat").write_bytes(original)
             rec = next(r for r in app.read_feat_records(src) if r["feat_id"] == "fastmetabolism")
             result = app.create_respec_copy(
@@ -160,7 +163,7 @@ class UnderrailWebAppTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             src = Path(td) / "SourceSave"
             src.mkdir()
-            original = (ROOT / "assault_global.dat").read_bytes()
+            original = (FIXTURES / "assault_global.dat").read_bytes()
             (src / "global.dat").write_bytes(original)
             (src / "info.dat").write_text("dummy")
             result = app.create_respec_copy(

@@ -7,14 +7,14 @@ This is the newer frontend for the local Python save-editing API.
 From Git Bash or a terminal:
 
 ```bash
-cd /c/Git/underrail_edit
-python underrail_webapp.py 8765
+cd /c/Git/underrail-respec-editor
+python -m underrail_respec_editor.web_app 8765
 ```
 
 In a second terminal:
 
 ```bash
-cd /c/Git/underrail_edit/frontend
+cd /c/Git/underrail-respec-editor/frontend
 npm install
 npm run dev
 ```
@@ -26,7 +26,7 @@ http://127.0.0.1:3000
 Or on Windows run:
 
 ```text
-C:\Git\underrail_edit\run_underrail_next_ui.cmd
+scripts\scripts/run_underrail_next_ui.cmd
 ```
 
 ## Notes

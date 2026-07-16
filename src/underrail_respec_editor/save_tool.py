@@ -1,8 +1,8 @@
 """
 Underrail Save Tool — attributes & skills editor (VERIFIED format, v1.3.1.2)
 =============================================================================
-Reverse-engineered and verified 2026-07-16 against two live saves
-(character 'WindStalker', game version 1.3.1.2). See LLM_HANDOFF.md.
+Reverse-engineered and verified against two reference saves from Underrail v1.3.1.2.
+See docs/ACKNOWLEDGMENTS.md and docs/REVERSE_ENGINEERING.md.
 
 FILE FORMAT (global.dat):
     [24-byte header] + [gzip stream]
@@ -41,9 +41,9 @@ EDITING POLICY:
     beyond it. Attribute sanity range 1..20 (hard block outside).
 
 USAGE (run from anywhere; paths can be a save folder or a global.dat):
-  python underrail_savetool.py show   <save_folder_or_global.dat>
-  python underrail_savetool.py clone  <save_folder> <new_name>
-  python underrail_savetool.py edit   <save_folder_or_global.dat> \
+  python -m underrail_respec_editor.save_tool show   <save_folder_or_global.dat>
+  python -m underrail_respec_editor.save_tool clone  <save_folder> <new_name>
+  python -m underrail_respec_editor.save_tool edit   <save_folder_or_global.dat> \
          [--attr Strength=8 ...] [--skill Crossbows=70 ...] [--level 12]
   'edit' always writes a timestamped .bak next to the target first.
 Typical safe workflow:

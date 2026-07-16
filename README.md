@@ -31,17 +31,26 @@ Release `0.0.1` is intentionally conservative.
 
 ```text
 .
-├── underrail_savetool.py        # low-level save parser/writer
-├── underrail_webapp.py          # local Python HTTP API + legacy HTML UI
-├── crawl_underrail_feats.py     # MediaWiki crawler for feat rules/tooltips
-├── feat_rules.json              # crawled feat prerequisite rules
-├── feat_ids.json                # known/inferred feat id mapping
-├── wiki_tooltips.json           # wiki-derived descriptions
+├── src/underrail_respec_editor/
+│   ├── save_tool.py             # low-level save parser/writer
+│   ├── web_app.py               # local Python HTTP API + legacy HTML UI
+│   ├── wiki_crawler.py          # MediaWiki crawler for feat rules/tooltips
+│   └── data/                    # packaged feat rules, ids, tooltips
 ├── frontend/                    # Next.js UI
-├── test_underrail_webapp.py     # backend/regression tests
-├── test_next_frontend.py        # frontend structure tests
-└── run_underrail_next_ui.cmd    # Windows convenience launcher
+├── tests/                       # Python regression and frontend structure tests
+├── data/fixtures/               # sample reference global.dat fixtures
+├── scripts/                     # Windows launcher scripts
+└── docs/                        # release notes and reverse-engineering docs
 ```
+
+## Acknowledgments and references
+
+This project had a head start from earlier reverse-engineering/reference work, including prior Fable 5 mapping notes and the supplied paired reference saves. Public wiki data is used for feat prerequisite and tooltip generation.
+
+See:
+
+- `docs/ACKNOWLEDGMENTS.md`
+- `docs/REVERSE_ENGINEERING.md`
 
 ## Quick start for users
 
@@ -52,17 +61,23 @@ Prerequisites:
 - Node.js 20+ recommended
 - Underrail installed with local saves
 
-Run both the backend and frontend:
+Run both the backend and frontend from a source checkout:
 
 ```bash
-cd /c/Git/underrail-respec-editor
-python underrail_webapp.py 8765
+scripts/run_underrail_next_ui.cmd
+```
+
+Manual backend/frontend startup:
+
+```bash
+set PYTHONPATH=%CD%\src
+python -m underrail_respec_editor.web_app 8765
 ```
 
 In another terminal:
 
 ```bash
-cd /c/Git/underrail-respec-editor/frontend
+cd frontend
 npm install
 npm run dev
 ```
@@ -71,12 +86,6 @@ Open:
 
 ```text
 http://127.0.0.1:3000
-```
-
-On Windows, you can also run:
-
-```text
-run_underrail_next_ui.cmd
 ```
 
 The legacy single-file HTML UI remains available at:
@@ -117,7 +126,7 @@ C:\Users\<USER>\Documents\My Games\Underrail\Saves\<SaveName>
 Run backend tests:
 
 ```bash
-python -m unittest -v test_underrail_webapp.py test_next_frontend.py
+python -m unittest -v tests/test_underrail_webapp.py tests/test_next_frontend.py
 ```
 
 Build frontend:
@@ -128,24 +137,27 @@ npm ci
 npm run build
 ```
 
+Build Python package:
+
+```bash
+python -m pip install --upgrade build
+python -m build
+```
+
 Run the wiki crawler:
 
 ```bash
-python crawl_underrail_feats.py
+set PYTHONPATH=%CD%\src
+python -m underrail_respec_editor.wiki_crawler
 ```
 
-The crawler uses the public Stygian Software MediaWiki API and regenerates:
-
-- `feat_rules.json`
-- `feat_ids.json`
-- `wiki_tooltips.json`
-- `feat_crawl_report.json`
+The crawler uses the public Stygian Software MediaWiki API and regenerates JSON under `src/underrail_respec_editor/data/`.
 
 ## CI/CD
 
 GitHub Actions workflows are included:
 
-- `ci.yml`: Python tests and Next.js build on pull requests and pushes.
+- `ci.yml`: Python tests and Next.js build on pushes to `main` and manual `workflow_dispatch` only. Pull requests intentionally do **not** trigger CI/CD.
 - `release.yml`: creates a release artifact zip when a `v*` tag is pushed.
 
 ## Packaging / release
@@ -159,7 +171,7 @@ git tag v0.0.1
 git push origin v0.0.1
 ```
 
-The GitHub release workflow will upload an `underrail-respec-editor-v0.0.1.zip` artifact.
+The GitHub release workflow uploads an `underrail-respec-editor-v0.0.1.zip` artifact plus Python wheel/sdist artifacts.
 
 ## License
 
@@ -169,4 +181,4 @@ MIT. See `LICENSE`.
 
 - This project is an independent community tool and is not affiliated with Stygian Software.
 - Underrail is owned by Stygian Software.
-- Wiki-derived prerequisite and tooltip text comes from the public Underrail wiki; regenerate it with `crawl_underrail_feats.py` when needed.
+- Wiki-derived prerequisite and tooltip text comes from the public Underrail wiki; regenerate it with `python -m underrail_respec_editor.wiki_crawler` when needed.

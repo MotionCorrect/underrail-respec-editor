@@ -9,7 +9,7 @@ Preferred Next.js UI:
 Double-click:
 
 ```text
-C:\Git\underrail_edit\run_underrail_next_ui.cmd
+scripts\scripts/run_underrail_next_ui.cmd
 ```
 
 Then open:
@@ -21,12 +21,12 @@ http://127.0.0.1:3000
 Or run manually in two terminals:
 
 ```bash
-cd /c/Git/underrail_edit
-python underrail_webapp.py 8765
+cd /c/Git/underrail-respec-editor
+python -m underrail_respec_editor.web_app 8765
 ```
 
 ```bash
-cd /c/Git/underrail_edit/frontend
+cd /c/Git/underrail-respec-editor/frontend
 npm install
 npm run dev
 ```
@@ -76,8 +76,8 @@ mouse-over details and a more Underrail-like layout.
   extra feat slots or deleting feat slots is not supported yet.
 - Selected feats are also used for prerequisite warnings/errors.
 - Feat prerequisites for the screenshot-known feats are cross-referenced against
-  the Stygian Software wiki where available. `crawl_underrail_feats.py` crawls
-  `Category:Feats` from the wiki and writes `feat_rules.json` plus
+  the Stygian Software wiki where available. `src/underrail_respec_editor/wiki_crawler.py` crawls
+  `Category:Feats` from the wiki and writes ``src/underrail_respec_editor/data/feat_rules.json` plus
  `feat_ids.json`, and `wiki_tooltips.json`. Current crawl covers 220 feats,
  24 skills, and 7 base attributes. Example: Concussive Shots requires
  Crossbows 30, not Guns 30.
@@ -87,9 +87,9 @@ mouse-over details and a more Underrail-like layout.
 Run:
 
 ```bash
-cd /c/Git/underrail_edit
-python crawl_underrail_feats.py
-python -m unittest -v test_underrail_webapp.py
+cd /c/Git/underrail-respec-editor
+python -m underrail_respec_editor.wiki_crawler
+python -m unittest -v tests/test_underrail_webapp.py
 ```
 
 The crawler is stdlib-only and uses the official MediaWiki API. It parses the

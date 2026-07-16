@@ -14,7 +14,6 @@ keywords = ["underrail", "save-editor", "respec", "local-tool"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Environment :: Web Environment",
-
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -26,11 +25,12 @@ Homepage = "https://github.com/MotionCorrect/underrail-respec-editor"
 Issues = "https://github.com/MotionCorrect/underrail-respec-editor/issues"
 
 [project.scripts]
-underrail-respec-api = "underrail_webapp:main"
+underrail-respec-api = "underrail_respec_editor.web_app:main"
+underrail-respec-save = "underrail_respec_editor.save_tool:main"
+underrail-respec-crawl-wiki = "underrail_respec_editor.wiki_crawler:main"
 
-[tool.setuptools]
-py-modules = ["underrail_savetool", "underrail_webapp", "crawl_underrail_feats"]
-include-package-data = true
+[tool.setuptools.packages.find]
+where = ["src"]
 
-[tool.setuptools.data-files]
-"share/underrail-respec-editor" = ["feat_rules.json", "feat_ids.json", "wiki_tooltips.json", "feat_crawl_report.json"]
+[tool.setuptools.package-data]
+underrail_respec_editor = ["data/*.json"]
