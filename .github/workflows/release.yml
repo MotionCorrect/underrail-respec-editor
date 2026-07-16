@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Package source release
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Test backend
+        run: python -m unittest -v test_underrail_webapp.py test_next_frontend.py
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+      - name: Build Python package
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+      - name: Create source artifact
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $name = "underrail-respec-editor-$tag"
+          New-Item -ItemType Directory -Force -Path "release/$name" | Out-Null
+          $items = @(
+            "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md", "WEBAPP_README.md", "RELEASE_NOTES_v0.0.1.md",
+            "pyproject.toml", "underrail_savetool.py", "underrail_webapp.py", "crawl_underrail_feats.py",
+            "feat_rules.json", "feat_ids.json", "wiki_tooltips.json", "feat_crawl_report.json",
+            "test_underrail_webapp.py", "test_next_frontend.py", "jetski_global.dat", "assault_global.dat",
+            "run_underrail_next_ui.cmd", "run_underrail_respec_ui.cmd", "frontend"
+          )
+          foreach ($item in $items) { Copy-Item $item "release/$name" -Recurse -Force }
+          Remove-Item "release/$name/frontend/node_modules" -Recurse -Force -ErrorAction SilentlyContinue
+          Remove-Item "release/$name/frontend/.next" -Recurse -Force -ErrorAction SilentlyContinue
+          Compress-Archive -Path "release/$name" -DestinationPath "underrail-respec-editor-$tag.zip"
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          prerelease: true
+          body_path: RELEASE_NOTES_v0.0.1.md
+          files: |
+            underrail-respec-editor-${{ github.ref_name }}.zip
+            dist/*

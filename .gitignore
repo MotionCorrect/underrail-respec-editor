@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.venv/
+venv/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# Local runtime / generated artifacts
+*.log
+*.tmp
+*.bak
+*.zip
+next_ui_*.png
+frontend_visual_qc.js
+frontend/visual_qc.js
+steam_guide.html
+LLM_HANDOFF.md
+screenshots/
+underrail_screenshots.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local env/secrets
+.env
+.env.*
+!.env.example

@@ -1,0 +1,2952 @@
+{
+  "Advanced Psi Empathy": {
+    "any_skill_groups": [
+      {
+        "min": 100,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Any psi skill 100",
+      "Feat: Psi Empathy"
+    ],
+    "skills": {}
+  },
+  "Aimed Shot": {
+    "any_skill_groups": [
+      {
+        "min": 10,
+        "skills": [
+          "Guns",
+          "Crossbows"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns or Crossbows 10",
+      "Perception 6"
+    ],
+    "skills": {}
+  },
+  "Ambush": {
+    "attributes": {
+      "Perception": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 6",
+      "Stealth 40"
+    ],
+    "skills": {
+      "Stealth": 40
+    }
+  },
+  "Armor Sloping": {
+    "attributes": {
+      "Intelligence": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 6",
+      "Mechanics 15"
+    ],
+    "skills": {
+      "Mechanics": 15
+    }
+  },
+  "Ballistics": {
+    "attributes": {
+      "Intelligence": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 6",
+      "Tailoring 35"
+    ],
+    "skills": {
+      "Tailoring": 35
+    }
+  },
+  "Barrel Stare": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns 50"
+    ],
+    "skills": {
+      "Guns": 50
+    }
+  },
+  "Beast of Burden": {
+    "attributes": {
+      "Strength": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 10"
+    ],
+    "skills": {}
+  },
+  "Beyond Cold": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Blindsiding": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Stealth 80"
+    ],
+    "skills": {
+      "Stealth": 80
+    }
+  },
+  "Blitz": {
+    "attributes": {
+      "Agility": 10
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 10,
+    "raw_requirements": [
+      "Level 10",
+      "Agility 10"
+    ],
+    "skills": {}
+  },
+  "Boarding Up": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 60"
+    ],
+    "skills": {
+      "Melee": 60
+    }
+  },
+  "Body Horror": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Body Weight Training": {
+    "attributes": {
+      "Strength": 10
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Strength 10"
+    ],
+    "skills": {}
+  },
+  "Bodybuilding": {
+    "attributes": {
+      "Constitution": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Constitution 12"
+    ],
+    "skills": {}
+  },
+  "Bone Breaker": {
+    "attributes": {
+      "Strength": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 7",
+      "Melee 45"
+    ],
+    "skills": {
+      "Melee": 45
+    }
+  },
+  "Bowyer": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Mechanics 30"
+    ],
+    "skills": {
+      "Mechanics": 30
+    }
+  },
+  "Brutality": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intimidation 75",
+      "Melee 50"
+    ],
+    "skills": {
+      "Intimidation": 75,
+      "Melee": 50
+    }
+  },
+  "Brute Aim": {
+    "attributes": {
+      "Strength": 11
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 11",
+      "Heavy Guns 30"
+    ],
+    "skills": {
+      "Heavy Guns": 30
+    }
+  },
+  "Bullet Time": {
+    "attributes": {
+      "Dexterity": 9
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Gunslinger"
+    ],
+    "raw_requirements": [
+      "Dexterity 9",
+      "Guns 70",
+      "Feat Gunslinger"
+    ],
+    "skills": {
+      "Guns": 70
+    }
+  },
+  "Bullet Trance": {
+    "attributes": {
+      "Will": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Will 5",
+      "Heavy Guns 50"
+    ],
+    "skills": {
+      "Heavy Guns": 50
+    }
+  },
+  "Burglar": {
+    "any_skill_groups": [
+      {
+        "min": 15,
+        "skills": [
+          "Lockpicking",
+          "Hacking"
+        ]
+      }
+    ],
+    "attributes": {
+      "Dexterity": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6",
+      "Lockpicking or Hacking 15"
+    ],
+    "skills": {}
+  },
+  "Cerebral Trauma": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Thought Control 25",
+      "Psi Ability: Neural Overload"
+    ],
+    "skills": {
+      "Thought Control": 25
+    }
+  },
+  "Cheap Shots": {
+    "attributes": {
+      "Dexterity": 6,
+      "Intelligence": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6",
+      "Intelligence 5",
+      "Melee 40"
+    ],
+    "skills": {
+      "Melee": 40
+    }
+  },
+  "Clothier": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Tailoring 15"
+    ],
+    "skills": {
+      "Tailoring": 15
+    }
+  },
+  "Cohesive Mucus Glands": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Combo": {
+    "attributes": {
+      "Dexterity": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 65",
+      "Dexterity 8"
+    ],
+    "skills": {
+      "Melee": 65
+    }
+  },
+  "Commando": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns 80"
+    ],
+    "skills": {
+      "Guns": 80
+    }
+  },
+  "Concentrated Fire": {
+    "any_skill_groups": [
+      {
+        "min": 60,
+        "skills": [
+          "Guns",
+          "Heavy Guns"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 8",
+      "Guns 60",
+      "Guns or Heavy Guns 60"
+    ],
+    "skills": {
+      "Guns": 60
+    }
+  },
+  "Concussive Shots": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Crossbows 30"
+    ],
+    "skills": {
+      "Crossbows": 30
+    }
+  },
+  "Conditioning": {
+    "attributes": {
+      "Constitution": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Constitution 5"
+    ],
+    "skills": {}
+  },
+  "Continuum Ripple": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Temporal Manipulation 30",
+      "Psi Ability: Temporal Distortion"
+    ],
+    "skills": {
+      "Temporal Manipulation": 30
+    }
+  },
+  "Cooked Shot": {
+    "attributes": {
+      "Dexterity": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 5",
+      "Guns 35",
+      "Chemistry 25"
+    ],
+    "skills": {
+      "Chemistry": 25,
+      "Guns": 35
+    }
+  },
+  "Corporeal Projection": {
+    "attributes": {
+      "Strength": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 6",
+      "Psi Ability: Telekinetic Punch or Force Emission"
+    ],
+    "skills": {}
+  },
+  "Crippling Strike": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 30"
+    ],
+    "skills": {
+      "Melee": 30
+    }
+  },
+  "Critical Power": {
+    "any_skill_groups": [
+      {
+        "min": 75,
+        "skills": [
+          "Melee",
+          "Guns",
+          "Heavy Guns",
+          "Crossbows"
+        ]
+      }
+    ],
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee , Guns , Heavy Guns or Crossbows 75"
+    ],
+    "skills": {}
+  },
+  "Cryogenic Induction": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Metathermics 50",
+      "Psi Ability: Cryostasis or Cryogenic Barrier"
+    ],
+    "skills": {
+      "Metathermics": 50
+    }
+  },
+  "Cut-Throat": {
+    "attributes": {
+      "Dexterity": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 10",
+      "Melee 55",
+      "Stealth 45"
+    ],
+    "skills": {
+      "Melee": 55,
+      "Stealth": 45
+    }
+  },
+  "Deadly Snares": {
+    "attributes": {
+      "Perception": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 10",
+      "Crossbows 75",
+      "Traps 50"
+    ],
+    "skills": {
+      "Crossbows": 75,
+      "Traps": 50
+    }
+  },
+  "Decapitate": {
+    "attributes": {
+      "Strength": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 7",
+      "Melee 40"
+    ],
+    "skills": {
+      "Melee": 40
+    }
+  },
+  "Decommissioner": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Monster Slayer",
+      "Serial Killer"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted Feat: Monster Slayer",
+      "Restricted Feat: Serial Killer"
+    ],
+    "skills": {}
+  },
+  "Deflection": {
+    "attributes": {
+      "Dexterity": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6",
+      "Melee 35"
+    ],
+    "skills": {
+      "Melee": 35
+    }
+  },
+  "Demolition Man": {
+    "any_skill_groups": [
+      {
+        "min": 100,
+        "skills": [
+          "Guns",
+          "Heavy Guns"
+        ]
+      }
+    ],
+    "attributes": {
+      "Constitution": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Constitution 5",
+      "Guns or Heavy Guns 100"
+    ],
+    "skills": {}
+  },
+  "Dirty Kick": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 25"
+    ],
+    "skills": {
+      "Melee": 25
+    }
+  },
+  "Disassemble": {
+    "any_skill_groups": [
+      {
+        "min": 20,
+        "skills": [
+          "Electronics",
+          "Mechanics"
+        ]
+      }
+    ],
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Electronics or Mechanics 20"
+    ],
+    "skills": {}
+  },
+  "Doctor": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Biology 15"
+    ],
+    "skills": {
+      "Biology": 15
+    }
+  },
+  "Echoing Soliloquy": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Elemental Bolts": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Crossbows 75"
+    ],
+    "skills": {
+      "Crossbows": 75
+    }
+  },
+  "Empowered Invocation": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Psi Empathy",
+      "All other Empowered Invocation feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Thought Control 100",
+      "Feat: Psi Empathy",
+      "Restricted feats: All other Empowered Invocation feats",
+      "Psychokinesis 100",
+      "Metathermics 100",
+      "Temporal Manipulation 100"
+    ],
+    "skills": {
+      "Metathermics": 100,
+      "Psychokinesis": 100,
+      "Temporal Manipulation": 100,
+      "Thought Control": 100
+    }
+  },
+  "Empowered Metathermics": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Psi Empathy",
+      "All other Empowered Invocation feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Thought Control 100",
+      "Feat: Psi Empathy",
+      "Restricted feats: All other Empowered Invocation feats",
+      "Psychokinesis 100",
+      "Metathermics 100",
+      "Temporal Manipulation 100"
+    ],
+    "skills": {
+      "Metathermics": 100,
+      "Psychokinesis": 100,
+      "Temporal Manipulation": 100,
+      "Thought Control": 100
+    }
+  },
+  "Empowered Psychokinesis": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Psi Empathy",
+      "All other Empowered Invocation feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Thought Control 100",
+      "Feat: Psi Empathy",
+      "Restricted feats: All other Empowered Invocation feats",
+      "Psychokinesis 100",
+      "Metathermics 100",
+      "Temporal Manipulation 100"
+    ],
+    "skills": {
+      "Metathermics": 100,
+      "Psychokinesis": 100,
+      "Temporal Manipulation": 100,
+      "Thought Control": 100
+    }
+  },
+  "Empowered Temporal Manipulation": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Psi Empathy",
+      "All other Empowered Invocation feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Thought Control 100",
+      "Feat: Psi Empathy",
+      "Restricted feats: All other Empowered Invocation feats",
+      "Psychokinesis 100",
+      "Metathermics 100",
+      "Temporal Manipulation 100"
+    ],
+    "skills": {
+      "Metathermics": 100,
+      "Psychokinesis": 100,
+      "Temporal Manipulation": 100,
+      "Thought Control": 100
+    }
+  },
+  "Empowered Thought Control": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Psi Empathy",
+      "All other Empowered Invocation feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Thought Control 100",
+      "Feat: Psi Empathy",
+      "Restricted feats: All other Empowered Invocation feats",
+      "Psychokinesis 100",
+      "Metathermics 100",
+      "Temporal Manipulation 100"
+    ],
+    "skills": {
+      "Metathermics": 100,
+      "Psychokinesis": 100,
+      "Temporal Manipulation": 100,
+      "Thought Control": 100
+    }
+  },
+  "Escape Artist": {
+    "attributes": {
+      "Dexterity": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 7",
+      "Dodge 30"
+    ],
+    "skills": {
+      "Dodge": 30
+    }
+  },
+  "Evasive Maneuvers": {
+    "attributes": {
+      "Agility": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Evasion 50",
+      "Agility 6"
+    ],
+    "skills": {
+      "Evasion": 50
+    }
+  },
+  "Eviscerate": {
+    "attributes": {
+      "Dexterity": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 8",
+      "Melee 80"
+    ],
+    "skills": {
+      "Melee": 80
+    }
+  },
+  "Execute": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Opportunist"
+    ],
+    "raw_requirements": [
+      "Guns 70",
+      "Feat: Opportunist"
+    ],
+    "skills": {
+      "Guns": 70
+    }
+  },
+  "Expanded Psi Capacitance": {
+    "any_skill_groups": [
+      {
+        "min": 25,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Intelligence": 5
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Intelligence 5",
+      "Any psi skill 25",
+      "Feat: Psi Empathy"
+    ],
+    "skills": {}
+  },
+  "Expert Dodging": {
+    "attributes": {
+      "Agility": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Agility 12",
+      "Dodge 120"
+    ],
+    "skills": {
+      "Dodge": 120
+    }
+  },
+  "Expert Evasion": {
+    "attributes": {
+      "Agility": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Agility 12",
+      "Evasion 120"
+    ],
+    "skills": {
+      "Evasion": 120
+    }
+  },
+  "Expert Sprint": {
+    "attributes": {
+      "Agility": 13
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Sprint"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Agility 13",
+      "Feat: Sprint"
+    ],
+    "skills": {}
+  },
+  "Expert Throwing": {
+    "attributes": {
+      "Dexterity": 10
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Dexterity 10",
+      "Throwing 100"
+    ],
+    "skills": {
+      "Throwing": 100
+    }
+  },
+  "Expert Unarmed Combat": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Improved Unarmed Combat"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Melee 100",
+      "Feat: Improved Unarmed Combat"
+    ],
+    "skills": {
+      "Melee": 100
+    }
+  },
+  "Expertise": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Expose Weakness": {
+    "attributes": {
+      "Intelligence": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 40",
+      "Intelligence 5"
+    ],
+    "skills": {
+      "Melee": 40
+    }
+  },
+  "Fancy Footwork": {
+    "attributes": {
+      "Agility": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 7",
+      "Melee 40",
+      "Dodge 40"
+    ],
+    "skills": {
+      "Dodge": 40,
+      "Melee": 40
+    }
+  },
+  "Fast Metabolism": {
+    "attributes": {
+      "Constitution": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Constitution 6"
+    ],
+    "skills": {}
+  },
+  "Fatal Throw": {
+    "attributes": {
+      "Dexterity": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 8",
+      "Throwing 50"
+    ],
+    "skills": {
+      "Throwing": 50
+    }
+  },
+  "Fend": {
+    "attributes": {
+      "Agility": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 5",
+      "Melee 30"
+    ],
+    "skills": {
+      "Melee": 30
+    }
+  },
+  "Fight Response": {
+    "attributes": {
+      "Will": 7
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Flight Response"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Will 7",
+      "Restricted Feat: Flight Response"
+    ],
+    "skills": {}
+  },
+  "Fine Tuned": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Firebranded": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Fisherman": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Flight Response": {
+    "attributes": {
+      "Agility": 7
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Fight Response"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Agility 7",
+      "Restricted Feat: Fight Response"
+    ],
+    "skills": {}
+  },
+  "Flurry": {
+    "attributes": {
+      "Dexterity": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6",
+      "Melee 30"
+    ],
+    "skills": {
+      "Melee": 30
+    }
+  },
+  "Force User": {
+    "attributes": {
+      "Will": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Will 7",
+      "Psychokinesis 25",
+      "Psi Ability: Telekinetic Punch or Force Field"
+    ],
+    "skills": {
+      "Psychokinesis": 25
+    }
+  },
+  "Forceful Innervation": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Fragmented Chaos": {
+    "attributes": {
+      "Perception": 9
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 9",
+      "Guns 70"
+    ],
+    "skills": {
+      "Guns": 70
+    }
+  },
+  "Full-Auto": {
+    "any_skill_groups": [
+      {
+        "min": 40,
+        "skills": [
+          "Guns",
+          "Heavy Guns"
+        ]
+      }
+    ],
+    "attributes": {
+      "Strength": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 7",
+      "Guns 40",
+      "Guns or Heavy Guns 40"
+    ],
+    "skills": {
+      "Guns": 40
+    }
+  },
+  "Future Orientation": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Feat: Psi Empathy",
+      "Temporal Manipulation 60"
+    ],
+    "skills": {
+      "Temporal Manipulation": 60
+    }
+  },
+  "Grenadier": {
+    "attributes": {
+      "Dexterity": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6",
+      "Throwing 30"
+    ],
+    "skills": {
+      "Throwing": 30
+    }
+  },
+  "Guard": {
+    "attributes": {
+      "Strength": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 7",
+      "Melee 50"
+    ],
+    "skills": {
+      "Melee": 50
+    }
+  },
+  "Gun Nut": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Mechanics 15"
+    ],
+    "skills": {
+      "Mechanics": 15
+    }
+  },
+  "Gun-Fu": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns 40",
+      "Melee 40"
+    ],
+    "skills": {
+      "Guns": 40,
+      "Melee": 40
+    }
+  },
+  "Gunner's High": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Fast Metabolism"
+    ],
+    "raw_requirements": [
+      "Heavy Guns 70",
+      "Feat: Fast Metabolism"
+    ],
+    "skills": {
+      "Heavy Guns": 70
+    }
+  },
+  "Gunslinger": {
+    "attributes": {
+      "Dexterity": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 7",
+      "Guns 15"
+    ],
+    "skills": {
+      "Guns": 15
+    }
+  },
+  "Heavy Metal": {
+    "attributes": {
+      "Strength": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 10",
+      "Heavy Guns 60"
+    ],
+    "skills": {
+      "Heavy Guns": 60
+    }
+  },
+  "Heavy Punch": {
+    "attributes": {
+      "Strength": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 5",
+      "Melee 15"
+    ],
+    "skills": {
+      "Melee": 15
+    }
+  },
+  "Heavyweight": {
+    "attributes": {
+      "Strength": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 10",
+      "Melee 100"
+    ],
+    "skills": {
+      "Melee": 100
+    }
+  },
+  "Hemopsychosis": {
+    "any_skill_groups": [
+      {
+        "min": 75,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Constitution": 7,
+      "Will": 9
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Will 9",
+      "Constitution 7",
+      "Any psi skill 75",
+      "Feat: Psi Empathy"
+    ],
+    "skills": {}
+  },
+  "High-Technicalities": {
+    "any_skill_groups": [
+      {
+        "min": 25,
+        "skills": [
+          "Guns",
+          "Melee"
+        ]
+      }
+    ],
+    "attributes": {
+      "Intelligence": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 5",
+      "Guns or Melee 25"
+    ],
+    "skills": {}
+  },
+  "Hit and Run": {
+    "attributes": {
+      "Agility": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 7"
+    ],
+    "skills": {}
+  },
+  "Hunter": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Hypertoxicity": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Biology 35"
+    ],
+    "skills": {
+      "Biology": 35
+    }
+  },
+  "Hypothermia": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Metathermics 40",
+      "Psi Ability: Cryokinesis , Cryostasis or Cryokinetic Orb"
+    ],
+    "skills": {
+      "Metathermics": 40
+    }
+  },
+  "Impale": {
+    "attributes": {
+      "Strength": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 7",
+      "Melee 40"
+    ],
+    "skills": {
+      "Melee": 40
+    }
+  },
+  "Improved Naval Combat": {
+    "attributes": {
+      "Agility": 7
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Naval Combat"
+    ],
+    "raw_requirements": [
+      "Agility 7",
+      "Feat: Naval Combat"
+    ],
+    "skills": {}
+  },
+  "Improved Unarmed Combat": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 35"
+    ],
+    "skills": {
+      "Melee": 35
+    }
+  },
+  "Increased Agility": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Increased Base Ability": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Increased Constitution": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Increased Dexterity": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Increased Intelligence": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Increased Perception": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Increased Strength": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Increased Will": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "All other Increased Base Ability feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted feats: All other Increased Base Ability feats"
+    ],
+    "skills": {}
+  },
+  "Interloper": {
+    "attributes": {
+      "Agility": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 7",
+      "Stealth 20"
+    ],
+    "skills": {
+      "Stealth": 20
+    }
+  },
+  "Iron Grip": {
+    "attributes": {
+      "Strength": 11
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 11"
+    ],
+    "skills": {}
+  },
+  "Iron Will": {
+    "attributes": {
+      "Will": 7
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Will 7"
+    ],
+    "skills": {}
+  },
+  "Jet 'n' Jab": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Naval Combat"
+    ],
+    "raw_requirements": [
+      "Melee 50",
+      "Feat: Naval Combat"
+    ],
+    "skills": {
+      "Melee": 50
+    }
+  },
+  "Juggernaut": {
+    "attributes": {
+      "Constitution": 7,
+      "Strength": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Constitution 7",
+      "Strength 7"
+    ],
+    "skills": {}
+  },
+  "Kneecap Shot": {
+    "any_skill_groups": [
+      {
+        "min": 25,
+        "skills": [
+          "Guns",
+          "Crossbows"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 7",
+      "Guns or Crossbows 25"
+    ],
+    "skills": {}
+  },
+  "Last Stand": {
+    "attributes": {
+      "Constitution": 9
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 5,
+    "raw_requirements": [
+      "Constitution 9",
+      "Level 5"
+    ],
+    "skills": {}
+  },
+  "Leading Shot": {
+    "attributes": {
+      "Dexterity": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 5",
+      "Guns 35"
+    ],
+    "skills": {
+      "Guns": 35
+    }
+  },
+  "Lightning Punches": {
+    "attributes": {
+      "Dexterity": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 8",
+      "Melee 25"
+    ],
+    "skills": {
+      "Melee": 25
+    }
+  },
+  "Locus of Control": {
+    "attributes": {
+      "Will": 10
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Will 10",
+      "Thought Control 75",
+      "Feat: Psi Empathy"
+    ],
+    "skills": {
+      "Thought Control": 75
+    }
+  },
+  "Mad Chemist": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Chemistry 40"
+    ],
+    "skills": {
+      "Chemistry": 40
+    }
+  },
+  "Mag Dump": {
+    "attributes": {
+      "Strength": 8
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Full-Auto"
+    ],
+    "raw_requirements": [
+      "Strength 8",
+      "Heavy Guns 80",
+      "Feat: Full-Auto"
+    ],
+    "skills": {
+      "Heavy Guns": 80
+    }
+  },
+  "Major Supplier": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Mercantile 50"
+    ],
+    "skills": {
+      "Mercantile": 50
+    }
+  },
+  "Mantra": {
+    "any_skill_groups": [
+      {
+        "min": 100,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Will": 8
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Will 8",
+      "Any psi skill 100"
+    ],
+    "skills": {}
+  },
+  "Marksman": {
+    "attributes": {
+      "Dexterity": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 5",
+      "Crossbows 15"
+    ],
+    "skills": {
+      "Crossbows": 15
+    }
+  },
+  "Meditation": {
+    "any_skill_groups": [
+      {
+        "min": 50,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Intelligence": 5,
+      "Will": 7
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Tranquility"
+    ],
+    "raw_requirements": [
+      "Will 7",
+      "Intelligence 5",
+      "Any psi skill 50",
+      "Feat: Tranquility"
+    ],
+    "skills": {}
+  },
+  "Mental Subversion": {
+    "attributes": {
+      "Will": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Will 6",
+      "Thought Control 30",
+      "Psi Ability: Neural Overload or Frighten"
+    ],
+    "skills": {
+      "Thought Control": 30
+    }
+  },
+  "Monster Slayer": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Decommissioner",
+      "Serial Killer"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted Feat: Decommissioner",
+      "Restricted Feat: Serial Killer"
+    ],
+    "skills": {}
+  },
+  "Monstrous Yell": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Motioner": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Naval Combat": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Naval Jousting": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Naval Combat"
+    ],
+    "raw_requirements": [
+      "Melee 70",
+      "Feat: Naval Combat"
+    ],
+    "skills": {
+      "Melee": 70
+    }
+  },
+  "Neural Overclocking": {
+    "any_skill_groups": [
+      {
+        "min": 65,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Will": 10
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Will 10",
+      "Any psi skill 65",
+      "Feat: Psi Empathy"
+    ],
+    "skills": {}
+  },
+  "Neurology": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Biology 35"
+    ],
+    "skills": {
+      "Biology": 35
+    }
+  },
+  "Nimble": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Ninja Looter": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Onslaught": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 75"
+    ],
+    "skills": {
+      "Melee": 75
+    }
+  },
+  "Opportunist": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Outer Visions": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Pack Rathound": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Paranoia": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Parry": {
+    "attributes": {
+      "Dexterity": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6",
+      "Melee 30"
+    ],
+    "skills": {
+      "Melee": 30
+    }
+  },
+  "Pellet Mayhem": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns 40"
+    ],
+    "skills": {
+      "Guns": 40
+    }
+  },
+  "Perfect Scattering": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns 65"
+    ],
+    "skills": {
+      "Guns": 65
+    }
+  },
+  "Philosophy": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Philosophy II": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Philosophy III": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Pinning": {
+    "attributes": {
+      "Dexterity": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 7",
+      "Throwing 40"
+    ],
+    "skills": {
+      "Throwing": 40
+    }
+  },
+  "Point Shot": {
+    "attributes": {
+      "Dexterity": 6,
+      "Perception": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 6",
+      "Dexterity 6",
+      "Guns 25"
+    ],
+    "skills": {
+      "Guns": 25
+    }
+  },
+  "Polymath": {
+    "attributes": {
+      "Intelligence": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 8"
+    ],
+    "skills": {}
+  },
+  "Power Management": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Electronics 15"
+    ],
+    "skills": {
+      "Electronics": 15
+    }
+  },
+  "Practical Physicist": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Electronics 35"
+    ],
+    "skills": {
+      "Electronics": 35
+    }
+  },
+  "Practiced Parabola": {
+    "attributes": {
+      "Intelligence": 5,
+      "Perception": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 7",
+      "Intelligence 5",
+      "Guns 40"
+    ],
+    "skills": {
+      "Guns": 40
+    }
+  },
+  "Premeditation": {
+    "any_skill_groups": [
+      {
+        "min": 40,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Intelligence": 6
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Intelligence 6",
+      "Any psi skill 40",
+      "Feat: Psi Empathy"
+    ],
+    "skills": {}
+  },
+  "Psi Empathy": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Psionic Mania": {
+    "any_skill_groups": [
+      {
+        "min": 50,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Will": 8
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psychosis"
+    ],
+    "raw_requirements": [
+      "Will 8",
+      "Any psi skill 50",
+      "Feat: Psychosis"
+    ],
+    "skills": {}
+  },
+  "Psycho-neural Flexibility": {
+    "any_skill_groups": [
+      {
+        "min": 55,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Intelligence": 8
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy",
+      "Psycho-neural Optimization"
+    ],
+    "raw_requirements": [
+      "Intelligence 8",
+      "Any psi skill 55",
+      "Feat: Psi Empathy",
+      "Restricted feat: Psycho-neural Optimization"
+    ],
+    "skills": {}
+  },
+  "Psycho-neural Optimization": {
+    "any_skill_groups": [
+      {
+        "min": 55,
+        "skills": [
+          "Thought Control",
+          "Psychokinesis",
+          "Metathermics",
+          "Temporal Manipulation"
+        ]
+      }
+    ],
+    "attributes": {
+      "Will": 8
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy",
+      "Psycho-neural Flexibility"
+    ],
+    "raw_requirements": [
+      "Will 8",
+      "Any psi skill 55",
+      "Feat: Psi Empathy",
+      "Restricted feat: Psycho-neural Flexibility"
+    ],
+    "skills": {}
+  },
+  "Psycho-temporal Acceleration": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Temporal Manipulation 45",
+      "Psi Ability: Psycho-temporal Contraction or Psycho-temporal Dilation"
+    ],
+    "skills": {
+      "Temporal Manipulation": 45
+    }
+  },
+  "Psychokinetic Elasticity": {
+    "attributes": {
+      "Will": 7
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Feat: Psi Empathy",
+      "Will 7",
+      "Psychokinesis 80"
+    ],
+    "skills": {
+      "Psychokinesis": 80
+    }
+  },
+  "Psychosis": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy",
+      "Tranquility"
+    ],
+    "raw_requirements": [
+      "Feat: Psi Empathy",
+      "Restricted feat: Tranquility"
+    ],
+    "skills": {}
+  },
+  "Psychostatic Electricity": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Psychokinesis 40",
+      "Psi Ability: Electrokinesis or Electrokinetic Imprint"
+    ],
+    "skills": {
+      "Psychokinesis": 40
+    }
+  },
+  "Pummel": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 20"
+    ],
+    "skills": {
+      "Melee": 20
+    }
+  },
+  "Pyromaniac": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Metathermics 35",
+      "Psi ability: Pyrokinesis"
+    ],
+    "skills": {
+      "Metathermics": 35
+    }
+  },
+  "Quick Pockets": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Quick Tinkering": {
+    "attributes": {
+      "Dexterity": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 7",
+      "Traps 25"
+    ],
+    "skills": {
+      "Traps": 25
+    }
+  },
+  "Rapid Fire": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns 50"
+    ],
+    "skills": {
+      "Guns": 50
+    }
+  },
+  "Rearm": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Recklessness": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Remote Surgeon": {
+    "attributes": {
+      "Dexterity": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 8",
+      "Throwing 60",
+      "Biology 25"
+    ],
+    "skills": {
+      "Biology": 25,
+      "Throwing": 60
+    }
+  },
+  "Riposte": {
+    "attributes": {
+      "Dexterity": 7
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Parry"
+    ],
+    "raw_requirements": [
+      "Dexterity 7",
+      "Melee 40",
+      "Feat: Parry"
+    ],
+    "skills": {
+      "Melee": 40
+    }
+  },
+  "Ripper": {
+    "any_skill_groups": [
+      {
+        "min": 50,
+        "skills": [
+          "Melee",
+          "Throwing"
+        ]
+      }
+    ],
+    "attributes": {
+      "Dexterity": 10,
+      "Will": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 10",
+      "Will 5",
+      "Melee or Throwing 50"
+    ],
+    "skills": {}
+  },
+  "Salesman": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Mercantile 35"
+    ],
+    "skills": {
+      "Mercantile": 35
+    }
+  },
+  "Sap": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 50",
+      "Stealth 50"
+    ],
+    "skills": {
+      "Melee": 50,
+      "Stealth": 50
+    }
+  },
+  "Scrutinous": {
+    "any_skill_groups": [
+      {
+        "min": 120,
+        "skills": [
+          "Melee",
+          "Guns",
+          "Heavy Guns",
+          "Crossbows"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 11
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Perception 11",
+      "Melee , Guns , Heavy Guns or Crossbows 120"
+    ],
+    "skills": {}
+  },
+  "Sea Dog": {
+    "attributes": {
+      "Agility": 10
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Improved Naval Combat"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Agility 10",
+      "Feat: Improved Naval Combat"
+    ],
+    "skills": {}
+  },
+  "Serial Killer": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Decommissioner",
+      "Monster Slayer"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Restricted Feat: Decommissioner",
+      "Restricted Feat: Monster Slayer"
+    ],
+    "skills": {}
+  },
+  "Shadow Tricks": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "level_min": 10,
+    "raw_requirements": [
+      "Level 10",
+      "Stealth 50"
+    ],
+    "skills": {
+      "Stealth": 50
+    }
+  },
+  "Sharpshooter": {
+    "any_skill_groups": [
+      {
+        "min": 60,
+        "skills": [
+          "Guns",
+          "Crossbows"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 10
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Aimed Shot"
+    ],
+    "raw_requirements": [
+      "Perception 10",
+      "Guns or Crossbows 60",
+      "Feat: Aimed Shot"
+    ],
+    "skills": {}
+  },
+  "Shell Shock": {
+    "any_skill_groups": [
+      {
+        "min": 60,
+        "skills": [
+          "Guns",
+          "Heavy Guns"
+        ]
+      }
+    ],
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns or Heavy Guns 60",
+      "Intimidation 40"
+    ],
+    "skills": {
+      "Intimidation": 40
+    }
+  },
+  "Shield Arm": {
+    "attributes": {
+      "Strength": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 8"
+    ],
+    "skills": {}
+  },
+  "Shield Bash": {
+    "attributes": {
+      "Strength": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 6",
+      "Melee 40"
+    ],
+    "skills": {
+      "Melee": 40
+    }
+  },
+  "Shoemaker": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Shooting Spree": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Aimed Shot"
+    ],
+    "raw_requirements": [
+      "Guns 55",
+      "Feat: Aimed Shot"
+    ],
+    "skills": {
+      "Guns": 55
+    }
+  },
+  "Shroomhead": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy"
+    ],
+    "raw_requirements": [
+      "Feat: Psi Empathy"
+    ],
+    "skills": {}
+  },
+  "Sixth Shell": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Guns 20"
+    ],
+    "skills": {
+      "Guns": 20
+    }
+  },
+  "Skinner": {
+    "attributes": {
+      "Intelligence": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 7",
+      "Tailoring 15"
+    ],
+    "skills": {
+      "Tailoring": 15
+    }
+  },
+  "Snipe": {
+    "any_skill_groups": [
+      {
+        "min": 35,
+        "skills": [
+          "Guns",
+          "Crossbows"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 10
+    },
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Aimed Shot"
+    ],
+    "raw_requirements": [
+      "Guns or Crossbows 35",
+      "Perception 10",
+      "Stealth 30",
+      "Feat: Aimed Shot"
+    ],
+    "skills": {
+      "Stealth": 30
+    }
+  },
+  "Snooping": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [],
+    "skills": {}
+  },
+  "Spear Guardian": {
+    "attributes": {
+      "Dexterity": 5,
+      "Strength": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 6",
+      "Dexterity 5",
+      "Melee 55"
+    ],
+    "skills": {
+      "Melee": 55
+    }
+  },
+  "Spear Throw": {
+    "attributes": {
+      "Dexterity": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 5",
+      "Melee 20",
+      "Throwing 20"
+    ],
+    "skills": {
+      "Melee": 20,
+      "Throwing": 20
+    }
+  },
+  "Spec Ops": {
+    "attributes": {
+      "Agility": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 6",
+      "Guns 50"
+    ],
+    "skills": {
+      "Guns": 50
+    }
+  },
+  "Special Tactics": {
+    "attributes": {
+      "Intelligence": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 6",
+      "Crossbows 50"
+    ],
+    "skills": {
+      "Crossbows": 50
+    }
+  },
+  "Specialist": {
+    "attributes": {
+      "Intelligence": 10
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 16,
+    "raw_requirements": [
+      "Level 16",
+      "Intelligence 10"
+    ],
+    "skills": {}
+  },
+  "Split Spare": {
+    "attributes": {
+      "Dexterity": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 10",
+      "Throwing 80"
+    ],
+    "skills": {
+      "Throwing": 80
+    }
+  },
+  "Sprint": {
+    "attributes": {
+      "Agility": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 6"
+    ],
+    "skills": {}
+  },
+  "Steadfast Aim": {
+    "attributes": {
+      "Dexterity": 6,
+      "Strength": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 5",
+      "Dexterity 6",
+      "Guns 25"
+    ],
+    "skills": {
+      "Guns": 25
+    }
+  },
+  "Stoicism": {
+    "attributes": {
+      "Constitution": 7,
+      "Will": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Constitution 7",
+      "Will 7"
+    ],
+    "skills": {}
+  },
+  "Strafe": {
+    "attributes": {
+      "Agility": 5,
+      "Dexterity": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 5",
+      "Agility 5"
+    ],
+    "skills": {}
+  },
+  "Strider": {
+    "attributes": {
+      "Agility": 10
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Agility 10"
+    ],
+    "skills": {}
+  },
+  "Stuntman": {
+    "attributes": {
+      "Agility": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "raw_requirements": [
+      "Level 26",
+      "Agility 12"
+    ],
+    "skills": {}
+  },
+  "Super Slam": {
+    "attributes": {
+      "Strength": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 10",
+      "Melee 75"
+    ],
+    "skills": {
+      "Melee": 75
+    }
+  },
+  "Suppressive Fire": {
+    "any_skill_groups": [
+      {
+        "min": 10,
+        "skills": [
+          "Guns",
+          "Heavy Guns"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 6",
+      "Guns or Heavy Guns 10"
+    ],
+    "skills": {}
+  },
+  "Sure Step": {
+    "attributes": {
+      "Agility": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 5"
+    ],
+    "skills": {}
+  },
+  "Survival Instincts": {
+    "attributes": {
+      "Constitution": 9
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Constitution 9"
+    ],
+    "skills": {}
+  },
+  "Sweep": {
+    "attributes": {
+      "Agility": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Agility 6",
+      "Melee 55"
+    ],
+    "skills": {
+      "Melee": 55
+    }
+  },
+  "Taste for Blood": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Melee 50"
+    ],
+    "skills": {
+      "Melee": 50
+    }
+  },
+  "Telekinetic Undulation": {
+    "attributes": {
+      "Will": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Will 5",
+      "Psi Ability: Telekinetic Proxy"
+    ],
+    "skills": {}
+  },
+  "Tempered: Acid": {
+    "attributes": {
+      "Constitution": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Other Tempered feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Constitution 12",
+      "Restricted Feats: Other Tempered feats"
+    ],
+    "skills": {}
+  },
+  "Tempered: Cold": {
+    "attributes": {
+      "Constitution": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Other Tempered feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Constitution 12",
+      "Restricted Feats: Other Tempered feats"
+    ],
+    "skills": {}
+  },
+  "Tempered: Electricity": {
+    "attributes": {
+      "Constitution": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Other Tempered feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Constitution 12",
+      "Restricted Feats: Other Tempered feats"
+    ],
+    "skills": {}
+  },
+  "Tempered: Heat": {
+    "attributes": {
+      "Constitution": 12
+    },
+    "confidence": "wiki-crawled",
+    "level_min": 26,
+    "other_feats": [
+      "Other Tempered feats"
+    ],
+    "raw_requirements": [
+      "Level 26",
+      "Constitution 12",
+      "Restricted Feats: Other Tempered feats"
+    ],
+    "skills": {}
+  },
+  "Thermodynamicity": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Metathermics 30",
+      "Psi Ability: Pyrokinesis",
+      "Psi Ability: Cryokinesis"
+    ],
+    "skills": {
+      "Metathermics": 30
+    }
+  },
+  "Thick Skull": {
+    "attributes": {
+      "Constitution": 10
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Constitution 10"
+    ],
+    "skills": {}
+  },
+  "Three-Pointer": {
+    "attributes": {
+      "Dexterity": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 7",
+      "Throwing 50"
+    ],
+    "skills": {
+      "Throwing": 50
+    }
+  },
+  "Tranquility": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "other_feats": [
+      "Psi Empathy",
+      "Psychosis"
+    ],
+    "raw_requirements": [
+      "Feat: Psi Empathy",
+      "Restricted feat: Psychosis"
+    ],
+    "skills": {}
+  },
+  "Trap Expert": {
+    "attributes": {
+      "Dexterity": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6",
+      "Traps 30"
+    ],
+    "skills": {
+      "Traps": 30
+    }
+  },
+  "Tricky Trajectory": {
+    "any_skill_groups": [
+      {
+        "min": 90,
+        "skills": [
+          "Guns",
+          "Heavy Guns"
+        ]
+      }
+    ],
+    "attributes": {
+      "Perception": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Perception 8",
+      "Guns or Heavy Guns 90"
+    ],
+    "skills": {}
+  },
+  "Trigger Happy": {
+    "attributes": {
+      "Dexterity": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dexterity 6"
+    ],
+    "skills": {}
+  },
+  "Uncanny Dodge": {
+    "attributes": {
+      "Agility": 8
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Dodge 40",
+      "Agility 8"
+    ],
+    "skills": {
+      "Dodge": 40
+    }
+  },
+  "Versatility": {
+    "attributes": {
+      "Intelligence": 5
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 5"
+    ],
+    "skills": {}
+  },
+  "Vile Weaponry": {
+    "any_skill_groups": [
+      {
+        "min": 25,
+        "skills": [
+          "Crossbows",
+          "Melee",
+          "Traps"
+        ]
+      }
+    ],
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Biology 10",
+      "Crossbows , Melee or Traps 25"
+    ],
+    "skills": {
+      "Biology": 10
+    }
+  },
+  "Weaponsmith": {
+    "attributes": {
+      "Intelligence": 6
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intelligence 6",
+      "Mechanics 25"
+    ],
+    "skills": {
+      "Mechanics": 25
+    }
+  },
+  "Wrestling": {
+    "attributes": {
+      "Strength": 7
+    },
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Strength 7",
+      "Melee 40"
+    ],
+    "skills": {
+      "Melee": 40
+    }
+  },
+  "Yell": {
+    "attributes": {},
+    "confidence": "wiki-crawled",
+    "raw_requirements": [
+      "Intimidation 20"
+    ],
+    "skills": {
+      "Intimidation": 20
+    }
+  }
+}
