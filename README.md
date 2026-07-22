@@ -7,7 +7,7 @@ The tool now has two deliberately separate workflows:
 - **Save respec editor:** reads an Underrail save folder or `global.dat`, lets you visually reallocate base attributes and skill points, validates selected feat prerequisites, and writes changes only to a cloned save folder.
 - **Runtime mod patcher:** scans and patches the user's local installed `underrail.exe` for selected quality-of-life mods, with dry-run, game-process lockout, assembly backup, latest-save safety backup, and rollback controls.
 
-> Status: **beta / v0.0.3**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
+> Status: **beta / v0.0.4**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
 
 ## Goals
 
@@ -19,7 +19,7 @@ The tool now has two deliberately separate workflows:
 
 ## Current beta limitations
 
-Release `0.0.3` is intentionally conservative for save editing, and adds an explicit expert workflow for runtime assembly mods.
+Release `0.0.4` is intentionally conservative for save editing, and adds an explicit expert workflow for runtime assembly mods.
 
 - Attribute and skill editing is the best-tested path.
 - Save writing is clone-first: source save folders are not modified.
@@ -209,13 +209,13 @@ CI intentionally does not run on pull requests; use push-to-main and manual/tag 
 
 ## Packaging / release
 
-For release `0.0.3`, packaging includes source code, Python wheel/sdist, the static UI, and the runtime patcher source/project. Release artifacts must not include Underrail game files, patched game assemblies, Steam DLLs, screenshots containing copyrighted assets, or third-party mod source code.
+For release `0.0.4`, packaging includes source code, Python wheel/sdist, the static UI, and the runtime patcher source/project. Release artifacts must not include Underrail game files, patched game assemblies, Steam DLLs, screenshots containing copyrighted assets, or third-party mod source code.
 
 Create a release locally:
 
 ```bash
-git tag v0.0.3
-git push origin v0.0.3
+git tag v0.0.4
+git push origin v0.0.4
 ```
 
 The GitHub release workflow uploads a source zip, Windows portable zip, and Python wheel/sdist artifacts.

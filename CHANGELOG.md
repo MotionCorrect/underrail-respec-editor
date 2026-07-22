@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.0.4 - Beta
+
+### Changed
+
+- README now presents the project as an Underrail respec and runtime mod tool, not only a save respec editor.
+- Runtime Mods UI now polls game-process status and locks runtime mod controls whenever `underrail.exe` is running.
+- Added `/api/runtime/status` so the UI can surface the same process lock enforced by backend patch/rollback guards.
+
 ## v0.0.3 - Beta
 
 ### Added
