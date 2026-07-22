@@ -62,3 +62,21 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .featGrid label { border: 1px solid #6f3c00; border-radius: 6px; padding: 6px; background: #120d08; color: #ffc078; }
 .featGrid label:hover { outline: 1px solid var(--edge2); }
 @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } .sidePanel { position: static; } .attrWheel, .skillColumns { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); } .pathRow { grid-template-columns: 1fr; } }
+
+.communityModsPanel { margin-top: 14px; }
+.referenceNote { color: #ffd7a0; margin: 6px 0 12px; }
+.referenceNote a { color: #9bc9ff; }
+.modGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; }
+.modCard { border: 1px solid #6f3c00; border-radius: 8px; background: #120d08; padding: 10px; color: #ffc078; }
+.modCard:hover { outline: 1px solid var(--edge2); background: #1a120b; }
+.modCard h3 { margin: 0 0 5px; color: #ffe0ae; }
+.modCard p { margin: 8px 0; color: #ffd7a0; }
+.modCard small { color: var(--muted); }
+
+.runtimeModsPanel { margin-top: 14px; }
+.runtimeControls { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
+.runtimeReport { border: 1px solid #6f3c00; border-radius: 8px; background: #090706; color: #ffd7a0; margin: 10px 0; padding: 10px; overflow-wrap: anywhere; }
+.patchPoint { margin-top: 6px; color: #9bc9ff; }
+.runtimeToggle { margin-top: 10px; }
+.runtimeToggle label { display: inline-grid; grid-template-columns: 48px 120px; align-items: center; gap: 8px; margin-right: 8px; }
+.runtimeToggle button { margin-right: 8px; margin-top: 8px; }

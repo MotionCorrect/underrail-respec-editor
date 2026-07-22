@@ -19,8 +19,8 @@ copy /Y README.md dist\underrail-respec-editor\README.md >nul
 copy /Y LICENSE dist\underrail-respec-editor\LICENSE >nul
 copy /Y NOTICE.md dist\underrail-respec-editor\NOTICE.md >nul
 if not exist dist\underrail-respec-editor\docs mkdir dist\underrail-respec-editor\docs
-copy /Y docs\RELEASE_NOTES_v0.0.2.md dist\underrail-respec-editor\docs\RELEASE_NOTES_v0.0.2.md >nul
+copy /Y docs\RELEASE_NOTES_v0.0.3.md dist\underrail-respec-editor\docs\RELEASE_NOTES_v0.0.3.md >nul
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Compress-Archive -Path 'dist/underrail-respec-editor' -DestinationPath 'dist/underrail-respec-editor-v0.0.2-windows-portable.zip' -Force" || exit /b 1
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Compress-Archive -Path 'dist/underrail-respec-editor' -DestinationPath 'dist/underrail-respec-editor-v0.0.3-windows-portable.zip' -Force" || exit /b 1
 
-echo Built dist\underrail-respec-editor-v0.0.2-windows-portable.zip
+echo Built dist\underrail-respec-editor-v0.0.3-windows-portable.zip

@@ -17,8 +17,11 @@ type AnalyzeState = {
   all_known_feats: string[];
   all_feat_ids: Record<string, string>;
   tooltips: { attributes: Record<string,string>; skills: Record<string,string>; feats: Record<string,string> };
+  community_mods?: CommunityModsCatalog;
 };
 
+type CommunityMod = { id: string; name: string; category: string; effect: string; integration_signal: string; default_from_source?: string; save_editor_action: string };
+type CommunityModsCatalog = { source: { name?: string; url?: string; reviewed_commit?: string; license_note?: string }; scope_note?: string; mods: CommunityMod[]; design_implications: string[] };
 type HoverInfo = { title: string; text: string; kind?: string } | null;
 
 const API = process.env.NEXT_PUBLIC_UNDERAIL_API || '';
@@ -94,6 +97,12 @@ export default function Page() {
   const [newName, setNewName] = useState('');
   const [message, setMessage] = useState('List or load a save. In portable mode, the bundled Python API is already running.');
   const [validation, setValidation] = useState<any>(null);
+  const [gameDir, setGameDir] = useState('');
+  const [runtimeScan, setRuntimeScan] = useState<any>(null);
+  const [throwingCap, setThrowingCap] = useState(0.99);
+  const [weightMultiplier, setWeightMultiplier] = useState(0.1);
+  const [runtimeModSelection, setRuntimeModSelection] = useState<Record<string, boolean>>({ item_weight: true, force_restock: false, traders_buy_all: false, fastforward: false, throwing_chance_cap: false });
+  const [lastRuntimeBackup, setLastRuntimeBackup] = useState('');
 
   const featList = useMemo(() => state ? Array.from(new Set([...(state.all_known_feats || []), ...(state.detected_feats || [])])).sort() : [], [state]);
 
@@ -147,6 +156,34 @@ export default function Page() {
       feat_replacements: []
     });
     setMessage(`Created cloned save: ${result.destination}`);
+  }
+
+  async function scanRuntimeMods() {
+    const result = await api(`/api/runtime/scan${gameDir ? `?game_dir=${encodeURIComponent(gameDir)}` : ''}`);
+    setRuntimeScan(result);
+    setGameDir(result.assembly ? result.assembly.replace(/[\\/]underrail\.exe$/i, '') : gameDir);
+    setMessage(`Runtime scan found ${result.mods?.throwing_chance_cap?.candidate_count ?? 0} throwing-cap patch point(s).`);
+  }
+
+  function selectedRuntimeMods() {
+    return Object.entries(runtimeModSelection).filter(([, enabled]) => enabled).map(([id]) => id);
+  }
+
+  function toggleRuntimeMod(id: string) {
+    setRuntimeModSelection({ ...runtimeModSelection, [id]: !runtimeModSelection[id] });
+  }
+
+  async function patchSelectedRuntimeMods(dryRun: boolean) {
+    const mods = selectedRuntimeMods();
+    if (!mods.length) { setMessage('Select at least one runtime mod first.'); return; }
+    const result = await api('/api/runtime/patch-mods', { game_dir: gameDir || undefined, mods, cap: throwingCap, weight_multiplier: weightMultiplier, dry_run: dryRun });
+    if (result.backup) setLastRuntimeBackup(result.backup);
+    setMessage(dryRun ? result.text : `Patched runtime mods: ${mods.join(', ')}. Backup: ${result.backup}`);
+  }
+
+  async function rollbackRuntimePatch() {
+    const result = await api('/api/runtime/rollback', { game_dir: gameDir || undefined, backup: lastRuntimeBackup });
+    setMessage(`Rolled back runtime patch from ${result.restored_from}`);
   }
 
   const attrTotal = Object.values(attrs).reduce((a,b) => a + b, 0);
@@ -212,6 +249,52 @@ export default function Page() {
           <input type="checkbox" checked={selectedFeats.has(f)} onChange={() => toggleFeat(f)} /> {f}
         </label>)}</div>
       </section>
+
+      <section className="gamePanel runtimeModsPanel">
+        <div className="panelTitle">Runtime mods - expert live patch tab</div>
+        <p className="referenceNote">This tab patches the installed game assembly, not a save. Close Underrail first. Patch actions create a timestamped game assembly backup under <code>underrail_respec_backups</code> and also copy your latest save into repo-local ignored <code>runtime_safety_backups</code> before writing.</p>
+        <div className="runtimeControls">
+          <input className="pathInput" value={gameDir} onChange={e => setGameDir(e.target.value)} placeholder="Underrail install folder containing underrail.exe" />
+          <button onClick={scanRuntimeMods}>Scan install</button>
+        </div>
+        {runtimeScan && <div className="runtimeReport">
+          <div>Assembly: {runtimeScan.assembly}</div>
+          <div>SHA256: {runtimeScan.sha256}</div>
+          {Object.entries(runtimeScan.mods || {}).map(([id, info]: any) => <div key={id} className="patchPoint"><b>{id}</b>: {info.implemented ? 'implemented' : 'not implemented yet'} · candidates {info.candidate_count} · {info.target || info.details}</div>)}
+        </div>}
+        <div className="modGrid">
+          {[
+            ['item_weight', 'Item weight', 'Multiplies Weight and SingleItemWeight getters.'],
+            ['force_restock', 'Force restock', 'Forces merchant restock boolean true when barter/restock path runs.'],
+            ['traders_buy_all', 'Traders buy all', 'Disables barter item category/quantity restriction methods.'],
+            ['fastforward', 'Fastforward (experimental; do not use yet)', 'Known to patch and roll back, but failed live launch smoke testing on build 21973456; kept visible as experimental for future debugging, not part of the stable click-to-patch set.'],
+            ['throwing_chance_cap', 'Throwing hit chance cap', 'Changes repeated 0.9 throwing cap constants; already applied on this install.'],
+          ].map(([id, title, text]) => <label key={id} className="modCard runtimeToggle">
+            <input type="checkbox" checked={!!runtimeModSelection[id]} disabled={id === 'fastforward'} onChange={() => toggleRuntimeMod(id)} />
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </label>)}
+        </div>
+        <div className="modCard runtimeToggle">
+          <label>Throw cap <input type="number" min="0.15" max="1" step="0.01" value={throwingCap} onChange={e => setThrowingCap(Number(e.target.value))} /></label>
+          <label>Weight x <input type="number" min="0" max="1" step="0.001" value={weightMultiplier} onChange={e => setWeightMultiplier(Number(e.target.value))} /></label>
+          <button onClick={() => patchSelectedRuntimeMods(true)} disabled={!gameDir}>Dry-run selected</button>
+          <button onClick={() => patchSelectedRuntimeMods(false)} disabled={!gameDir}>Backup and patch selected</button>
+          <button onClick={rollbackRuntimePatch} disabled={!lastRuntimeBackup}>Rollback last runtime backup</button>
+        </div>
+      </section>
+
+      {state?.community_mods && <section className="gamePanel communityModsPanel">
+        <div className="panelTitle">External modding references</div>
+        <p className="referenceNote">Reviewed {state.community_mods.source.name} as runtime IL-hook reference material. Stable entries can be applied only through the separate Runtime Mods tab with scan, dry-run, backup, and rollback controls; no third-party mod code or game assets are bundled.</p>
+        <div className="modGrid">{state.community_mods.mods.map(m => <article key={m.id} className="modCard" onMouseEnter={() => setHoverInfo({ title: m.name, kind: 'Runtime mod reference', text: `${m.effect} ${m.integration_signal}` })}>
+          <h3>{m.name}</h3>
+          <div className="tag">{m.category}</div>
+          <p>{m.effect}</p>
+          {m.default_from_source && <small>Source default: {m.default_from_source}</small>}
+        </article>)}</div>
+        <p className="referenceNote"><a href={state.community_mods.source.url} target="_blank" rel="noreferrer">Source repository</a> · credited reference material; runtime patching here is independently implemented and guarded by backup/rollback.</p>
+      </section>}
     </main>
   );
 }

@@ -37,6 +37,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.parse import parse_qs, urlparse
 
 from .save_tool import ATTRS, SKILLS, Save
+from . import runtime_mods
 
 DEFAULT_PORT = 8765
 DEFAULT_SAVES_DIR = Path.home() / "Documents" / "My Games" / "Underrail" / "Saves"
@@ -45,6 +46,7 @@ DATA_DIR = PACKAGE_ROOT / "data"
 FEAT_IDS_PATH = DATA_DIR / "feat_ids.json"
 FEAT_RULES_PATH = DATA_DIR / "feat_rules.json"
 TOOLTIPS_PATH = DATA_DIR / "wiki_tooltips.json"
+COMMUNITY_MODS_PATH = DATA_DIR / "community_mods.json"
 STATIC_PREFIX = "/_next/"
 
 
@@ -147,9 +149,17 @@ def load_tooltips() -> Dict[str, Dict[str, str]]:
     return {"attributes": {}, "skills": {}, "feats": {}}
 
 
+def load_community_mods() -> Dict[str, Any]:
+    if COMMUNITY_MODS_PATH.is_file():
+        with COMMUNITY_MODS_PATH.open("r", encoding="utf-8") as fh:
+            return json.load(fh)
+    return {"source": {}, "mods": [], "design_implications": []}
+
+
 FEAT_RULES = load_feat_rules()
 FEAT_IDS = load_feat_ids()
 TOOLTIPS = load_tooltips()
+COMMUNITY_MODS = load_community_mods()
 ID_TO_FEAT_NAME = {v: k for k, v in FEAT_IDS.items()}
 
 
@@ -308,6 +318,7 @@ def analyze_target(path: str | Path, level: Optional[int] = None) -> Dict[str, A
         "all_known_feats": sorted(FEAT_RULES),
         "all_feat_ids": FEAT_IDS,
         "tooltips": TOOLTIPS,
+        "community_mods": COMMUNITY_MODS,
         "notes": [
             "The save stores current allocated attributes/skills here, but unspent attribute/skill point offsets are not mapped.",
             "This UI preserves the loaded totals by default. If the character has unused points, enter a higher target budget to spend them without editing the unspent counters.",
@@ -666,8 +677,13 @@ class Handler(BaseHTTPRequestHandler):
             if path == "/api/list-saves":
                 sort = (query.get("sort") or ["alpha"])[0]
                 self._send(200, {"saves": list_save_folders(sort=sort), "sort": sort})
+            elif path == "/api/community-mods":
+                self._send(200, COMMUNITY_MODS)
+            elif path == "/api/runtime/scan":
+                game_dir = (query.get("game_dir") or [None])[0]
+                self._send(200, runtime_mods.scan_runtime_mods(game_dir))
             elif path == "/api/health":
-                self._send(200, {"ok": True, "frontend": str(frontend_out_dir()) if frontend_out_dir() else "legacy"})
+                self._send(200, {"ok": True, "frontend": str(frontend_out_dir()) if frontend_out_dir() else "legacy", "community_mods": len(COMMUNITY_MODS.get("mods", []))})
             else:
                 static_file = static_file_for_url(path)
                 if static_file:
@@ -696,6 +712,17 @@ class Handler(BaseHTTPRequestHandler):
                     body.get("level"), body.get("feats", []), body.get("attr_budget"), body.get("skill_budget"),
                     bool(body.get("allow_invalid", False)), bool(body.get("ignore_budget", False)), body.get("feat_replacements", []),
                 ))
+            elif path == "/api/runtime/patch-throwing-cap":
+                self._send(200, runtime_mods.patch_throwing_chance_cap(
+                    body.get("game_dir"), float(body.get("cap", 0.99)), bool(body.get("dry_run", False)),
+                ))
+            elif path == "/api/runtime/patch-mods":
+                self._send(200, runtime_mods.patch_runtime_mods(
+                    body.get("game_dir"), body.get("mods", []), float(body.get("cap", 0.99)),
+                    float(body.get("weight_multiplier", 0.1)), bool(body.get("dry_run", False)),
+                ))
+            elif path == "/api/runtime/rollback":
+                self._send(200, runtime_mods.rollback_runtime_patch(body.get("game_dir"), body["backup"]))
             else:
                 self._send(404, {"error": "Not found"})
         except SystemExit as exc:

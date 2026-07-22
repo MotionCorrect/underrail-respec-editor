@@ -4,7 +4,7 @@ Open-source local save editor for **Underrail** focused on safe character respec
 
 The tool reads an Underrail save folder or `global.dat`, lets you visually reallocate base attributes and skill points, validates selected feat prerequisites, and writes changes only to a cloned save folder.
 
-> Status: **beta / v0.0.2**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
+> Status: **beta / v0.0.3**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
 
 ## Goals
 
@@ -15,7 +15,7 @@ The tool reads an Underrail save folder or `global.dat`, lets you visually reall
 
 ## Current beta limitations
 
-Release `0.0.1` is intentionally conservative.
+Release `0.0.3` is intentionally conservative for save editing, and adds an explicit expert workflow for runtime assembly mods.
 
 - Attribute and skill editing is the best-tested path.
 - Save writing is clone-first: source save folders are not modified.
@@ -25,6 +25,7 @@ Release `0.0.1` is intentionally conservative.
 - Adding or deleting feat slots is not supported.
 - Internal feat ids are partly inferred from wiki names; verified exceptions are overridden where known.
 - This is Windows-focused because Underrail saves live under the Windows user Documents folder by default.
+- The runtime mod patcher is also Windows/Steam focused and patches only the user's local installed `underrail.exe`.
 - The sample fixture saves are included for regression testing only.
 
 ## Repository layout
@@ -51,6 +52,8 @@ See:
 
 - `docs/ACKNOWLEDGMENTS.md`
 - `docs/REVERSE_ENGINEERING.md`
+- `docs/UNDERAIL_MODS_REVIEW.md`
+- `docs/RUNTIME_MOD_PATCHING.md`
 
 ## Quick start for users
 
@@ -93,6 +96,42 @@ The legacy single-file HTML UI remains available at:
 ```text
 http://127.0.0.1:8765
 ```
+
+## Runtime mods: click-to-patch expert workflow
+
+This project now includes a separate Runtime Mods tab for carefully patching the installed game assembly. This is not save editing. It changes your local `underrail.exe`, so the game must be closed before patching or rolling back.
+
+Stable tested runtime mods:
+
+- `traders_buy_all`: confirmed working; merchants buy all item types/quantities.
+- `force_restock`: confirmed working; close and reopen barter to refresh restock.
+- `item_weight`: confirmed working with default multiplier `0.1` after live testing.
+- `throwing_chance_cap`: implemented; changes throwing hit cap constants to the selected cap.
+
+Experimental / not enabled by default:
+
+- `fastforward`: byte-level patch and rollback work, but live launch smoke testing failed on the tested build, so do not use it for normal play yet.
+
+Normal user flow:
+
+1. Close Underrail.
+2. Open the local UI.
+3. Go to `Runtime mods - expert live patch tab`.
+4. Click `Scan install`.
+5. Select stable mods.
+6. Click `Dry-run selected`.
+7. If target counts look right, click `Backup and patch selected`.
+8. Launch Underrail.
+9. If anything is wrong, close Underrail and roll back using the backup path shown by the UI.
+
+The patcher creates two backup types before real writes:
+
+```text
+<Underrail install>\underrail_respec_backups\underrail.exe.<timestamp>.bak
+<repo>\runtime_safety_backups\latest-save-before-runtime-patch\<timestamp>-<SaveName>
+```
+
+See `docs/RUNTIME_MOD_PATCHING.md` for detailed targeting rules, live findings, rollback verification, legal/copyright notes, and future-update guidance.
 
 ## Usage workflow
 
@@ -160,15 +199,17 @@ GitHub Actions workflows are included:
 - `ci.yml`: Python tests and Next.js build on pushes to `main` and manual `workflow_dispatch` only. Pull requests intentionally do **not** trigger CI/CD.
 - `release.yml`: creates a release artifact zip when a `v*` tag is pushed.
 
+CI intentionally does not run on pull requests; use push-to-main and manual/tag workflows.
+
 ## Packaging / release
 
-For release `0.0.2`, packaging includes a source zip, Python wheel/sdist, and a Windows portable folder zip with the static UI bundled into the executable distribution.
+For release `0.0.3`, packaging includes source code, Python wheel/sdist, the static UI, and the runtime patcher source/project. Release artifacts must not include Underrail game files, patched game assemblies, Steam DLLs, screenshots containing copyrighted assets, or third-party mod source code.
 
 Create a release locally:
 
 ```bash
-git tag v0.0.2
-git push origin v0.0.2
+git tag v0.0.3
+git push origin v0.0.3
 ```
 
 The GitHub release workflow uploads a source zip, Windows portable zip, and Python wheel/sdist artifacts.
@@ -182,3 +223,4 @@ MIT. See `LICENSE`.
 - This project is an independent community tool and is not affiliated with Stygian Software.
 - Underrail is owned by Stygian Software.
 - Wiki-derived prerequisite and tooltip text comes from the public Underrail wiki; regenerate it with `python -m underrail_respec_editor.wiki_crawler` when needed.
+- Diverclaim/UnderrailMods is credited as external runtime-modding reference material. This project does not vendor code from it. Runtime patching is implemented independently in this repository and only patches the user's local installed game assembly after explicit scan/dry-run/backup controls.

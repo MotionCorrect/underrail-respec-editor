@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.0.3 - Beta
+
+### Added
+
+- Runtime Mods expert tab with scan, dry-run, backup-and-patch, and rollback controls.
+- Mono.Cecil runtime patcher project for local Underrail assembly patches.
+- Stable click-to-patch mods for tested Steam build `21973456`: item weight, force restock, traders buy all, and throwing hit chance cap.
+- Detailed runtime patching guide and operational findings.
+
+### Changed
+
+- Item weight runtime mod default multiplier is `0.1` after live testing showed `0.001` was too close to zero.
+- Release packaging includes the runtime patcher source/project and v0.0.3 release notes.
+
+### Safety
+
+- Runtime patch/rollback refuses to run while `underrail.exe` is active.
+- Fastforward remains experimental, disabled in the normal UI, and requires `--experimental` in the CLI.
+- Release notes document that no Underrail game files, patched binaries, Steam DLLs, copyrighted assets, or Diverclaim source code are included.
+
 ## v0.0.2 - Beta
 
 ### Added

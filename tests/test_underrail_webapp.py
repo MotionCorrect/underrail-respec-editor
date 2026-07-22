@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from underrail_respec_editor import web_app as app
+from underrail_respec_editor import runtime_mods
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "data" / "fixtures"
@@ -100,6 +101,54 @@ class UnderrailWebAppTests(unittest.TestCase):
         result = app.analyze_target(FIXTURES / "jetski_global.dat")
         self.assertIn("tooltips", result)
         self.assertIn("Strength", result["tooltips"]["attributes"])
+
+    def test_community_runtime_mod_catalog_is_reference_only(self):
+        result = app.analyze_target(FIXTURES / "jetski_global.dat")
+        catalog = result["community_mods"]
+        self.assertEqual(catalog["source"]["name"], "Diverclaim/UnderrailMods")
+        mod_ids = {item["id"] for item in catalog["mods"]}
+        self.assertEqual(mod_ids, {"fastforward", "item_weight", "traders_buy_all", "force_restock", "throwing_chance_cap"})
+        actions = {item["id"]: item["save_editor_action"] for item in catalog["mods"]}
+        self.assertEqual(actions["fastforward"], "experimental-reference-only")
+        self.assertEqual(actions["item_weight"], "runtime-patcher-available")
+        self.assertEqual(actions["traders_buy_all"], "runtime-patcher-available")
+        self.assertEqual(actions["force_restock"], "runtime-patcher-available")
+        self.assertEqual(actions["throwing_chance_cap"], "runtime-patcher-available")
+        self.assertIn("Runtime IL", catalog["scope_note"])
+        self.assertIn("no game assets", catalog["scope_note"])
+
+    def test_runtime_mod_steam_library_parser_finds_underrail_install(self):
+        text = '"libraryfolders" { "2" { "path" "H:\\\\SteamLibrary" } }'
+        paths = runtime_mods.parse_steam_library_paths(text)
+        self.assertEqual(str(paths[0]), "H:\\SteamLibrary")
+
+    def test_runtime_mod_game_dir_validation_requires_underrail_exe(self):
+        with tempfile.TemporaryDirectory() as td:
+            with self.assertRaises(ValueError):
+                runtime_mods.resolve_game_dir(td)
+
+    def test_runtime_mod_latest_save_backup_uses_repo_local_ignored_folder(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td) / "Saves"
+            backup_root = Path(td) / "runtime_safety_backups"
+            older = root / "Older"
+            newer = root / "Newest"
+            older.mkdir(parents=True)
+            newer.mkdir()
+            (older / "global.dat").write_bytes(b"old")
+            (newer / "global.dat").write_bytes(b"new")
+            (newer / "info.dat").write_text("metadata")
+            os.utime(older / "global.dat", (1000, 1000))
+            os.utime(newer / "global.dat", (2000, 2000))
+
+            result = runtime_mods.backup_latest_save(root, backup_root)
+
+            self.assertTrue(result["created"])
+            self.assertEqual(Path(result["source"]).name, "Newest")
+            destination = Path(result["destination"])
+            self.assertTrue(str(destination).startswith(str(backup_root)))
+            self.assertEqual((destination / "global.dat").read_bytes(), b"new")
+            self.assertEqual((destination / "info.dat").read_text(), "metadata")
 
     def test_level_requirement_validation_uses_crawled_rules(self):
         current = app.analyze_target(FIXTURES / "jetski_global.dat")

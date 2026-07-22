@@ -42,6 +42,20 @@ Known caveats:
 - verified exceptions live in `src/underrail_respec_editor/data/feat_ids.json`
 - the Next.js UI does not yet expose every legacy feat-replacement control
 
+## Runtime mods vs save edits
+
+Diverclaim/UnderrailMods documents runtime IL/assembly hook points for quality-of-life changes such as fast-forward, item-weight scaling, trader acceptance changes, forced restock, and throwing hit chance cap changes. Those are different from this project's `global.dat` clone-first save edits.
+
+Current policy:
+
+- keep runtime assembly patching separate from clone-first save editing
+- expose reviewed community mod metadata for attribution and UI context
+- require an explicit expert workflow with game binary backups, game-version matching, patch preview, and rollback before applying any runtime mod
+
+Current runtime patcher status: stable click-to-patch mods are `item_weight`, `force_restock`, `traders_buy_all`, and `throwing_chance_cap` for the tested local Steam build `21973456`. The patcher uses semantic scanners rather than raw RVAs alone: property names for weight, signature/shape checks for restock and barter methods, and constant-cluster matching for throwing cap. `fastforward` remains experimental because its byte-level patch and rollback succeeded but live launch smoke testing failed.
+
+See `docs/UNDERAIL_MODS_REVIEW.md`, `docs/RUNTIME_MOD_PATCHING.md`, and `src/underrail_respec_editor/data/community_mods.json`.
+
 ## Recommended verification workflow
 
 1. Make a small controlled in-game change.

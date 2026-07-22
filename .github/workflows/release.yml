@@ -45,7 +45,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path "release/$name" | Out-Null
           $items = @(
             "README.md", "LICENSE", "NOTICE.md", "CHANGELOG.md", "CONTRIBUTING.md", "SECURITY.md",
-            "docs", "pyproject.toml", "src", "tests", "data", "scripts", "packaging", "frontend"
+            "docs", "pyproject.toml", "src", "tests", "data", "scripts", "packaging", "frontend", "runtime-patcher"
           )
           foreach ($item in $items) { Copy-Item $item "release/$name" -Recurse -Force }
           Remove-Item "release/$name/frontend/node_modules" -Recurse -Force -ErrorAction SilentlyContinue
@@ -56,13 +56,13 @@ jobs:
           Copy-Item LICENSE dist/underrail-respec-editor/LICENSE -Force
           Copy-Item NOTICE.md dist/underrail-respec-editor/NOTICE.md -Force
           New-Item -ItemType Directory -Force -Path dist/underrail-respec-editor/docs | Out-Null
-          Copy-Item docs/RELEASE_NOTES_v0.0.2.md dist/underrail-respec-editor/docs/RELEASE_NOTES_v0.0.2.md -Force
+          Copy-Item docs/RELEASE_NOTES_v0.0.3.md dist/underrail-respec-editor/docs/RELEASE_NOTES_v0.0.3.md -Force
           Compress-Archive -Path "dist/underrail-respec-editor" -DestinationPath "underrail-respec-editor-$tag-windows-portable.zip"
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
           prerelease: true
-          body_path: docs/RELEASE_NOTES_v0.0.2.md
+          body_path: docs/RELEASE_NOTES_v0.0.3.md
           files: |
             underrail-respec-editor-${{ github.ref_name }}-source.zip
             underrail-respec-editor-${{ github.ref_name }}-windows-portable.zip

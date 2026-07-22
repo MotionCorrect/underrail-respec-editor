@@ -14,6 +14,7 @@ This project did not start from a blank slate. The v0.0.1 beta includes credit f
 
 - Underrail wiki pages from Stygian Software's public MediaWiki instance were used for feat prerequisite rules and tooltip/help text.
 - The crawler is in `src/underrail_respec_editor/wiki_crawler.py` and writes JSON data under `src/underrail_respec_editor/data/`.
+- Diverclaim/UnderrailMods (https://github.com/Diverclaim/UnderrailMods) was reviewed as external quality-of-life runtime modding reference material. Its ideas are summarized in `docs/UNDERAIL_MODS_REVIEW.md` and `src/underrail_respec_editor/data/community_mods.json`; code is not vendored.
 
 ## Legal / attribution note
 
