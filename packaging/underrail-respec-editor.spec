@@ -16,13 +16,14 @@ def collect_tree(src_dir: Path, dest_prefix: str):
 
 frontend_data = collect_tree(project_root / 'frontend' / 'out', 'underrail_respec_editor/frontend/out')
 json_data = collect_tree(project_root / 'src' / 'underrail_respec_editor' / 'data', 'underrail_respec_editor/data')
+runtime_patcher_data = collect_tree(project_root / 'runtime-patcher', 'runtime-patcher')
 
 a = Analysis(
     [str(project_root / 'src' / 'underrail_respec_editor' / 'portable.py')],
     pathex=[str(project_root / 'src')],
     binaries=[],
-    datas=frontend_data + json_data,
-    hiddenimports=['underrail_respec_editor.save_tool', 'underrail_respec_editor.web_app'],
+    datas=frontend_data + json_data + runtime_patcher_data,
+    hiddenimports=['underrail_respec_editor.save_tool', 'underrail_respec_editor.web_app', 'underrail_respec_editor.runtime_mods'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

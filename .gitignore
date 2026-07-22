@@ -24,6 +24,8 @@ frontend/out/
 *.tmp
 *.bak
 *.zip
+bin/
+obj/
 next_ui_*.png
 frontend_visual_qc.js
 frontend/visual_qc.js
@@ -31,6 +33,7 @@ steam_guide.html
 LLM_HANDOFF.md
 screenshots/
 underrail_screenshots.zip
+runtime_safety_backups/
 
 # OS / editor
 .DS_Store

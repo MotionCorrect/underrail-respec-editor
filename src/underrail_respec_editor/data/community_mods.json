@@ -1,0 +1,62 @@
+{
+  "source": {
+    "name": "Diverclaim/UnderrailMods",
+    "url": "https://github.com/Diverclaim/UnderrailMods",
+    "reviewed_commit": "678f3e0ce253057f6f96d2155f3ff83e95e4334e",
+    "reviewed_at": "2026-07-22",
+    "license_note": "No license file was present in the reviewed repository snapshot; this project summarizes concepts and links to the source, but does not vendor code."
+  },
+  "scope_note": "Runtime IL / assembly quality-of-life patches, not global.dat save edits. Stable patches are exposed only in the separate Runtime Mods expert tab with scan, dry-run, backup, and rollback controls; no game assets or third-party code are vendored.",
+  "mods": [
+    {
+      "id": "fastforward",
+      "name": "Fastforward",
+      "category": "runtime-il-hook",
+      "effect": "Temporarily increases game speed while a hotkey is held.",
+      "integration_signal": "Requires hooking GameTime assignment and routing through a Mods.ApplyFastforward-style helper.",
+      "default_from_source": "factor 10, Tilde hotkey",
+      "save_editor_action": "experimental-reference-only"
+    },
+    {
+      "id": "item_weight",
+      "name": "Item weight",
+      "category": "runtime-il-hook",
+      "effect": "Applies a multiplier to item weight calculations so the player can carry more.",
+      "integration_signal": "Targets SingleItemWeight and Weight property getters; safer as a runtime DLL/assembly patch than a save mutation.",
+      "default_from_source": "weight multiplier 0.001",
+      "default_in_this_tool": "weight multiplier 0.1 after live testing; 0.001 was too close to zero for practical play",
+      "save_editor_action": "runtime-patcher-available"
+    },
+    {
+      "id": "traders_buy_all",
+      "name": "Traders buy all",
+      "category": "runtime-il-hook",
+      "effect": "Makes traders accept all item types and quantities.",
+      "integration_signal": "Targets barter UI acceptance checks and text explaining what a trader wants to buy.",
+      "save_editor_action": "runtime-patcher-available"
+    },
+    {
+      "id": "force_restock",
+      "name": "Force restock",
+      "category": "runtime-il-hook",
+      "effect": "Forces merchant inventory restock, triggered by holding a hotkey while selecting the Barter dialog option.",
+      "integration_signal": "Targets the merchant restock method and toggles the boolean restock argument before original logic executes.",
+      "default_from_source": "F4 hotkey",
+      "save_editor_action": "runtime-patcher-available"
+    },
+    {
+      "id": "throwing_chance_cap",
+      "name": "Throwing hit chance cap",
+      "category": "runtime-il-hook",
+      "effect": "Changes the hard cap used in throwing hit chance calculations.",
+      "integration_signal": "Targets repeated 0.9 clamp constants in the throwing chance array calculation.",
+      "save_editor_action": "runtime-patcher-available"
+    }
+  ],
+  "design_implications": [
+    "Separate save-file respecs from runtime IL/assembly mods; they have different risk, versioning, and legal/support models.",
+    "A future mod system should use a manifest/catalog with explicit target type, game-version compatibility, default settings, and rollback instructions.",
+    "Runtime patches need obfuscation-tolerant matching by semantic anchors such as property names, interface attribute strings, UI text, and constant clusters.",
+    "The current clone-first save editor should not modify game binaries or DLLs without a separate explicit expert workflow."
+  ]
+}

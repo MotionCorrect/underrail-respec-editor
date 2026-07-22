@@ -23,6 +23,22 @@ class NextFrontendTests(unittest.TestCase):
         self.assertIn("modified_asc", page)
         self.assertIn("alpha", page)
 
+    def test_frontend_surfaces_community_mod_references_as_reference_only(self):
+        page = (FRONTEND / "app" / "page.tsx").read_text(encoding="utf-8")
+        self.assertIn("External modding references", page)
+        self.assertIn("runtime IL-hook reference", page)
+        self.assertIn("scan, dry-run, backup, and rollback", page)
+
+    def test_frontend_has_runtime_mod_expert_tab_and_backup_warning(self):
+        page = (FRONTEND / "app" / "page.tsx").read_text(encoding="utf-8")
+        self.assertIn("Runtime mods - expert live patch tab", page)
+        self.assertIn("Backup and patch", page)
+        self.assertIn("underrail_respec_backups", page)
+        self.assertIn("runtime_safety_backups", page)
+        self.assertIn("Fastforward (experimental; do not use yet)", page)
+        self.assertIn("value={weightMultiplier}", page)
+        self.assertIn("useState(0.1)", page)
+
 
 if __name__ == "__main__":
     unittest.main()
