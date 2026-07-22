@@ -127,6 +127,18 @@ class UnderrailWebAppTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 runtime_mods.resolve_game_dir(td)
 
+    def test_runtime_process_status_locks_when_underrail_is_running(self):
+        original = runtime_mods.underrail_process_running
+        try:
+            runtime_mods.underrail_process_running = lambda: True
+            status = runtime_mods.runtime_process_status()
+        finally:
+            runtime_mods.underrail_process_running = original
+
+        self.assertTrue(status["underrail_running"])
+        self.assertTrue(status["locked"])
+        self.assertIn("locked", status["message"])
+
     def test_runtime_mod_latest_save_backup_uses_repo_local_ignored_folder(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td) / "Saves"

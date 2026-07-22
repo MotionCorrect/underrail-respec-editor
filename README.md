@@ -1,14 +1,18 @@
-# Underrail Respec Editor
+# Underrail Respec & Runtime Mod Tool
 
-Open-source local save editor for **Underrail** focused on safe character respecs rather than unrestricted cheating.
+Open-source local tool for **Underrail** focused on safe character respecs and carefully guarded runtime quality-of-life patching rather than unrestricted cheating.
 
-The tool reads an Underrail save folder or `global.dat`, lets you visually reallocate base attributes and skill points, validates selected feat prerequisites, and writes changes only to a cloned save folder.
+The tool now has two deliberately separate workflows:
+
+- **Save respec editor:** reads an Underrail save folder or `global.dat`, lets you visually reallocate base attributes and skill points, validates selected feat prerequisites, and writes changes only to a cloned save folder.
+- **Runtime mod patcher:** scans and patches the user's local installed `underrail.exe` for selected quality-of-life mods, with dry-run, game-process lockout, assembly backup, latest-save safety backup, and rollback controls.
 
 > Status: **beta / v0.0.3**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
 
 ## Goals
 
 - Make Underrail character respecs less painful.
+- Provide a clear expert-only runtime mod workflow for tested quality-of-life patches.
 - Avoid direct cheating by default: preserve point budgets and validate feat requirements.
 - Keep all save operations local; no hosted service and no telemetry.
 - Provide an approachable UI with wiki-derived mouse-over help for base attributes, skills, and feats.
@@ -101,6 +105,8 @@ http://127.0.0.1:8765
 
 This project now includes a separate Runtime Mods tab for carefully patching the installed game assembly. This is not save editing. It changes your local `underrail.exe`, so the game must be closed before patching or rolling back.
 
+The UI locks runtime mod controls when it detects that Underrail is running. It checks status on load, after scan, before dry-run/patch/rollback actions, and every few seconds while the UI is open. The backend and C# patcher also refuse live patch/rollback if `underrail.exe` is active, so the lock is enforced below the UI too.
+
 Stable tested runtime mods:
 
 - `traders_buy_all`: confirmed working; merchants buy all item types/quantities.
@@ -114,7 +120,7 @@ Experimental / not enabled by default:
 
 Normal user flow:
 
-1. Close Underrail.
+1. Close Underrail. If you launch it while the UI is open, the Runtime Mods tab will switch to a locked state and disable patch controls.
 2. Open the local UI.
 3. Go to `Runtime mods - expert live patch tab`.
 4. Click `Scan install`.

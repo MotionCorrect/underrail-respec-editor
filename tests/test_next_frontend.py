@@ -38,6 +38,10 @@ class NextFrontendTests(unittest.TestCase):
         self.assertIn("Fastforward (experimental; do not use yet)", page)
         self.assertIn("value={weightMultiplier}", page)
         self.assertIn("useState(0.1)", page)
+        self.assertIn("Runtime mod controls are locked", page)
+        self.assertIn("/api/runtime/status", page)
+        self.assertIn("window.setInterval", page)
+        self.assertIn("disabled={!gameDir || runtimeLocked}", page)
 
 
 if __name__ == "__main__":

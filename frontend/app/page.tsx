@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type AttrName = 'Strength'|'Dexterity'|'Agility'|'Constitution'|'Perception'|'Will'|'Intelligence';
 type SaveInfo = { name: string; path: string; modified?: string; modified_ts?: number };
@@ -103,8 +103,23 @@ export default function Page() {
   const [weightMultiplier, setWeightMultiplier] = useState(0.1);
   const [runtimeModSelection, setRuntimeModSelection] = useState<Record<string, boolean>>({ item_weight: true, force_restock: false, traders_buy_all: false, fastforward: false, throwing_chance_cap: false });
   const [lastRuntimeBackup, setLastRuntimeBackup] = useState('');
+  const [runtimeStatus, setRuntimeStatus] = useState<any>({ underrail_running: false, locked: false, message: 'Underrail status not checked yet.' });
 
   const featList = useMemo(() => state ? Array.from(new Set([...(state.all_known_feats || []), ...(state.detected_feats || [])])).sort() : [], [state]);
+  const runtimeLocked = !!runtimeStatus?.locked;
+
+  async function refreshRuntimeStatus(showMessage = false) {
+    const result = await api('/api/runtime/status');
+    setRuntimeStatus(result);
+    if (showMessage || result.locked) setMessage(result.message);
+    return result;
+  }
+
+  useEffect(() => {
+    refreshRuntimeStatus(false).catch(() => undefined);
+    const timer = window.setInterval(() => refreshRuntimeStatus(false).catch(() => undefined), 5000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   async function listSaves() {
     const result = await api(`/api/list-saves?sort=${encodeURIComponent(sort)}`);
@@ -161,8 +176,9 @@ export default function Page() {
   async function scanRuntimeMods() {
     const result = await api(`/api/runtime/scan${gameDir ? `?game_dir=${encodeURIComponent(gameDir)}` : ''}`);
     setRuntimeScan(result);
+    setRuntimeStatus({ underrail_running: !!result.underrail_running, locked: !!result.locked, message: result.message });
     setGameDir(result.assembly ? result.assembly.replace(/[\\/]underrail\.exe$/i, '') : gameDir);
-    setMessage(`Runtime scan found ${result.mods?.throwing_chance_cap?.candidate_count ?? 0} throwing-cap patch point(s).`);
+    setMessage(result.locked ? result.message : `Runtime scan found ${result.mods?.throwing_chance_cap?.candidate_count ?? 0} throwing-cap patch point(s).`);
   }
 
   function selectedRuntimeMods() {
@@ -170,10 +186,13 @@ export default function Page() {
   }
 
   function toggleRuntimeMod(id: string) {
+    if (runtimeLocked) { setMessage('Runtime mod controls are locked because Underrail is running. Close the game first.'); return; }
     setRuntimeModSelection({ ...runtimeModSelection, [id]: !runtimeModSelection[id] });
   }
 
   async function patchSelectedRuntimeMods(dryRun: boolean) {
+    const status = await refreshRuntimeStatus(false);
+    if (status.locked) { setMessage(status.message); return; }
     const mods = selectedRuntimeMods();
     if (!mods.length) { setMessage('Select at least one runtime mod first.'); return; }
     const result = await api('/api/runtime/patch-mods', { game_dir: gameDir || undefined, mods, cap: throwingCap, weight_multiplier: weightMultiplier, dry_run: dryRun });
@@ -182,6 +201,8 @@ export default function Page() {
   }
 
   async function rollbackRuntimePatch() {
+    const status = await refreshRuntimeStatus(false);
+    if (status.locked) { setMessage(status.message); return; }
     const result = await api('/api/runtime/rollback', { game_dir: gameDir || undefined, backup: lastRuntimeBackup });
     setMessage(`Rolled back runtime patch from ${result.restored_from}`);
   }
@@ -193,8 +214,8 @@ export default function Page() {
     <main className="shell">
       <header className="topbar">
         <div>
-          <div className="eyebrow">Local save editor</div>
-          <h1>Underrail Visual Respec Editor</h1>
+          <div className="eyebrow">Local save editor + runtime mod patcher</div>
+          <h1>Underrail Respec & Runtime Mod Tool</h1>
         </div>
         <div className="statusPill">Python API: {API || 'same-origin'}</div>
       </header>
@@ -252,10 +273,14 @@ export default function Page() {
 
       <section className="gamePanel runtimeModsPanel">
         <div className="panelTitle">Runtime mods - expert live patch tab</div>
-        <p className="referenceNote">This tab patches the installed game assembly, not a save. Close Underrail first. Patch actions create a timestamped game assembly backup under <code>underrail_respec_backups</code> and also copy your latest save into repo-local ignored <code>runtime_safety_backups</code> before writing.</p>
+        <p className="referenceNote">This tab patches the installed game assembly, not a save. Close Underrail first. The UI checks every few seconds and locks runtime mod controls whenever Underrail is running. Patch actions create a timestamped game assembly backup under <code>underrail_respec_backups</code> and also copy your latest save into repo-local ignored <code>runtime_safety_backups</code> before writing.</p>
         <div className="runtimeControls">
           <input className="pathInput" value={gameDir} onChange={e => setGameDir(e.target.value)} placeholder="Underrail install folder containing underrail.exe" />
           <button onClick={scanRuntimeMods}>Scan install</button>
+          <button onClick={() => refreshRuntimeStatus(true)}>Check game status</button>
+        </div>
+        <div className={'runtimeReport ' + (runtimeLocked ? 'locked' : '')}>
+          <b>{runtimeLocked ? 'LOCKED: Underrail is running' : 'Ready: Underrail not detected'}</b> · {runtimeStatus?.message}
         </div>
         {runtimeScan && <div className="runtimeReport">
           <div>Assembly: {runtimeScan.assembly}</div>
@@ -270,17 +295,17 @@ export default function Page() {
             ['fastforward', 'Fastforward (experimental; do not use yet)', 'Known to patch and roll back, but failed live launch smoke testing on build 21973456; kept visible as experimental for future debugging, not part of the stable click-to-patch set.'],
             ['throwing_chance_cap', 'Throwing hit chance cap', 'Changes repeated 0.9 throwing cap constants; already applied on this install.'],
           ].map(([id, title, text]) => <label key={id} className="modCard runtimeToggle">
-            <input type="checkbox" checked={!!runtimeModSelection[id]} disabled={id === 'fastforward'} onChange={() => toggleRuntimeMod(id)} />
+            <input type="checkbox" checked={!!runtimeModSelection[id]} disabled={runtimeLocked || id === 'fastforward'} onChange={() => toggleRuntimeMod(id)} />
             <h3>{title}</h3>
             <p>{text}</p>
           </label>)}
         </div>
         <div className="modCard runtimeToggle">
-          <label>Throw cap <input type="number" min="0.15" max="1" step="0.01" value={throwingCap} onChange={e => setThrowingCap(Number(e.target.value))} /></label>
-          <label>Weight x <input type="number" min="0" max="1" step="0.001" value={weightMultiplier} onChange={e => setWeightMultiplier(Number(e.target.value))} /></label>
-          <button onClick={() => patchSelectedRuntimeMods(true)} disabled={!gameDir}>Dry-run selected</button>
-          <button onClick={() => patchSelectedRuntimeMods(false)} disabled={!gameDir}>Backup and patch selected</button>
-          <button onClick={rollbackRuntimePatch} disabled={!lastRuntimeBackup}>Rollback last runtime backup</button>
+          <label>Throw cap <input type="number" min="0.15" max="1" step="0.01" value={throwingCap} disabled={runtimeLocked} onChange={e => setThrowingCap(Number(e.target.value))} /></label>
+          <label>Weight x <input type="number" min="0" max="1" step="0.001" value={weightMultiplier} disabled={runtimeLocked} onChange={e => setWeightMultiplier(Number(e.target.value))} /></label>
+          <button onClick={() => patchSelectedRuntimeMods(true)} disabled={!gameDir || runtimeLocked}>Dry-run selected</button>
+          <button onClick={() => patchSelectedRuntimeMods(false)} disabled={!gameDir || runtimeLocked}>Backup and patch selected</button>
+          <button onClick={rollbackRuntimePatch} disabled={!lastRuntimeBackup || runtimeLocked}>Rollback last runtime backup</button>
         </div>
       </section>
 

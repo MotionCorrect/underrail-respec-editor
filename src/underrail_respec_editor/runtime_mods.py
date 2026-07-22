@@ -175,9 +175,23 @@ def backup_latest_save(
     }
 
 
+def runtime_process_status() -> Dict[str, Any]:
+    running = underrail_process_running()
+    return {
+        "underrail_running": running,
+        "locked": running,
+        "message": (
+            "Underrail is running. Runtime mod controls are locked; close the game before patching or rolling back."
+            if running else
+            "Underrail is not running. Runtime mod writes are allowed after scan/dry-run confirmation."
+        ),
+    }
+
+
 def scan_runtime_mods(game_dir: Optional[str] = None) -> Dict[str, Any]:
     result = run_patcher("scan", game_dir)
     result["available_installs"] = discover_underrail_installs()
+    result.update(runtime_process_status())
     return result
 
 
