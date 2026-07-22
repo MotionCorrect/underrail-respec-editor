@@ -682,6 +682,8 @@ class Handler(BaseHTTPRequestHandler):
             elif path == "/api/runtime/scan":
                 game_dir = (query.get("game_dir") or [None])[0]
                 self._send(200, runtime_mods.scan_runtime_mods(game_dir))
+            elif path == "/api/runtime/status":
+                self._send(200, runtime_mods.runtime_process_status())
             elif path == "/api/health":
                 self._send(200, {"ok": True, "frontend": str(frontend_out_dir()) if frontend_out_dir() else "legacy", "community_mods": len(COMMUNITY_MODS.get("mods", []))})
             else:

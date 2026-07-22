@@ -76,6 +76,7 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .runtimeModsPanel { margin-top: 14px; }
 .runtimeControls { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
 .runtimeReport { border: 1px solid #6f3c00; border-radius: 8px; background: #090706; color: #ffd7a0; margin: 10px 0; padding: 10px; overflow-wrap: anywhere; }
+.runtimeReport.locked { border-color: #b33a2d; background: #1c0806; color: #ffb1a6; }
 .patchPoint { margin-top: 6px; color: #9bc9ff; }
 .runtimeToggle { margin-top: 10px; }
 .runtimeToggle label { display: inline-grid; grid-template-columns: 48px 120px; align-items: center; gap: 8px; margin-right: 8px; }
