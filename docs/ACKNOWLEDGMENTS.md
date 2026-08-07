@@ -14,6 +14,7 @@ This project did not start from a blank slate. The v0.0.1 beta includes credit f
 
 - Underrail wiki pages from Stygian Software's public MediaWiki instance were used for feat prerequisite rules and tooltip/help text.
 - The crawler is in `src/underrail_respec_editor/wiki_crawler.py` and writes JSON data under `src/underrail_respec_editor/data/`.
+- cannedbean29/UnderrailBuilderRemake (https://github.com/cannedbean29/UnderrailBuilderRemake) was identified as the source repository behind cannedbean29's GitHub Pages Underrail builder. It is useful reference material for computable build rules such as feat predicates, skill synergies, derived stats, specializations, and equipment modifiers. Because the repository does not currently include a license file, this project should treat it as reference/provenance unless permission or a license is clarified; do not vendor or copy its source wholesale.
 - Diverclaim/UnderrailMods (https://github.com/Diverclaim/UnderrailMods) was reviewed as external quality-of-life runtime modding reference material. Its ideas are summarized in `docs/UNDERAIL_MODS_REVIEW.md` and `src/underrail_respec_editor/data/community_mods.json`; code is not vendored.
 
 ## Legal / attribution note

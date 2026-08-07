@@ -9,6 +9,12 @@ The tool now has two deliberately separate workflows:
 
 > Status: **beta / v0.0.4**. Use backups. Verify cloned saves in-game before continuing a long playthrough.
 
+## UI preview
+
+![Underrail Respec & Runtime Mod Tool Next.js save editor UI](docs/images/underrail-next-ui-save-editor.png)
+
+The Next.js UI provides a local save browser, loaded-save path display, plus/minus character-sheet controls for base abilities and skills, effective-value readouts, wiki-derived mouse-over help, point-budget validation, and clone-first save creation controls. The Python API endpoint shown in the header stays local at `127.0.0.1`.
+
 ## Goals
 
 - Make Underrail character respecs less painful.

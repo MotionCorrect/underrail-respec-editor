@@ -34,6 +34,7 @@ LLM_HANDOFF.md
 screenshots/
 underrail_screenshots.zip
 runtime_safety_backups/
+tmp_research/
 
 # OS / editor
 .DS_Store

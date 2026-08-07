@@ -1,0 +1,701 @@
+{
+  "count": 38,
+  "failures": [],
+  "items": {
+    "weapons\\balorshammer": {
+      "damage": [
+        {
+          "max": 200.0,
+          "min": 100.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "100-200 (Mechanical)",
+        "incurred": "Ignores mechanical damage threshold when attacking organic targets. Damage increased by 10% for every point in strength above 8.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Balor's Hammer",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\boxinggloves": {
+      "damage": [
+        {
+          "max": 10.0,
+          "min": 6.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "6-10 (Mechanical)",
+        "incurred": "Incurs 140% of mechanical damage resistance and threshold. Damage increased by 10% for every point in strength above 5. Half of the damage bonus of Improved and Expert Unarmed Combat applies to this weapon.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Boxing Gloves",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\brassknuckles": {
+      "damage": [
+        {
+          "max": 12.0,
+          "min": 5.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "8%",
+        "damage": "5-12 (Mechanical)",
+        "incurred": "Incurs 140% of mechanical damage resistance and threshold. Damage increased by 5% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Brass Knuckles",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\butcherscleaver": {
+      "damage": [
+        {
+          "max": 30.0,
+          "min": 15.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "10%",
+        "damage": "15-30 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 8% for every point in strength above 5.",
+        "minskill": "| ammotype =",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Butcher's Cleaver",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\dehumanizer": {
+      "damage": [
+        {
+          "max": 20.0,
+          "min": 10.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "10%",
+        "damage": "10-20 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 2% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Dehumanizer",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\jackknife": {
+      "damage": [
+        {
+          "max": 9.0,
+          "min": 6.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "6-9 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 2% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Jackknife",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\knifethrowergloves": {
+      "damage": [
+        {
+          "max": 9.0,
+          "min": 4.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "4-9 (Mechanical)",
+        "incurred": "Incurs 140% of mechanical damage resistance and threshold. Damage increased by 5% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Knife Thrower's Glove",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\kurki": {
+      "damage": [
+        {
+          "max": 19.0,
+          "min": 9.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "20%",
+        "damage": "9-19 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 2% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Kukri",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\luckyknife": {
+      "damage": [
+        {
+          "max": 17.0,
+          "min": 9.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "15%",
+        "damage": "9-17 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 2% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Kohlmeier's Lucky Knife",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\needler": {
+      "damage": [
+        {
+          "max": 55.0,
+          "min": 45.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "7%",
+        "damage": "45-55 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold.",
+        "range": "14 (optimal: 9)",
+        "type": "Crossbow"
+      },
+      "page": "Needler",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\powerfist": {
+      "damage": [
+        {
+          "max": 21.0,
+          "min": 14.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "14-21 (Mechanical)",
+        "incurred": "Incurs 140% of mechanical damage resistance and threshold. Damage increased by 10% for every point in strength above 5.",
+        "minskill": "| ammotype =",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Power Fist",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\quake": {
+      "damage": [
+        {
+          "max": 75.0,
+          "min": 46.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "46-75 (Mechanical)",
+        "incurred": "Ignores mechanical damage threshold when attacking organic targets. Damage increased by 10% for every point in strength above 8.",
+        "minskill": "| ammotype =",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Quake",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\rathoundkingcrossbow": {
+      "damage": [
+        {
+          "max": 70.0,
+          "min": 30.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "4%",
+        "damage": "30-70 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold.",
+        "minskill": "| ammotype =",
+        "range": "14 (optimal: 9)",
+        "type": "Crossbow"
+      },
+      "page": "Jawbone",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\shiv": {
+      "damage": [
+        {
+          "max": 7.0,
+          "min": 1.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "8%",
+        "damage": "1-7 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold, but damage that penetrates the armor is increased by 25% against organic targets. Damage increased by 3% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Shiv",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\spikedchromebrassknuckles": {
+      "damage": [
+        {
+          "max": 14.0,
+          "min": 7.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "8%",
+        "damage": "7-14 (Mechanical)",
+        "incurred": "Incurs 140% of mechanical damage resistance and threshold. Damage increased by 10% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Spiked Chrome Brass Knuckles",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\steelcrowbar": {
+      "damage": [
+        {
+          "max": 13.0,
+          "min": 5.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "10%",
+        "damage": "5-13 (Mechanical)",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Steel Crowbar",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\supersteelcrowbar": {
+      "damage": [
+        {
+          "max": 25.0,
+          "min": 15.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "15%",
+        "damage": "15-25 (Mechanical)",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Super Steel Crowbar",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\theclaw": {
+      "damage": [
+        {
+          "max": 17.0,
+          "min": 9.0,
+          "type": ""
+        },
+        {
+          "max": 14.0,
+          "min": 8.0,
+          "type": ""
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "9-17 :Mechanical: 8-14 :",
+        "incurred": "Incurs 140% of mechanical damage resistance and threshold. Damage increased by 5% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "The Claw",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\tichromecrowbar": {
+      "damage": [
+        {
+          "max": 18.0,
+          "min": 10.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "12%",
+        "damage": "10-18 (Mechanical)",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "TiChrome Crowbar",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\tungstencrowbar": {
+      "damage": [
+        {
+          "max": 20.0,
+          "min": 8.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "8%",
+        "damage": "8-20 (Mechanical)",
+        "incurred": "Damage increased by 3% for every point in strength above 6.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Tungsten Crowbar",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\barbaton": {
+      "damage": [
+        {
+          "max": 110.0,
+          "min": 65.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "8%",
+        "damage": "65-110 (Mechanical)",
+        "incurred": "Ignores mechanical damage threshold when attacking organic targets. Damage increased by 10% for every point in strength above 8.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Barbaton",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\captainscutlass": {
+      "damage": [
+        {
+          "max": 60.0,
+          "min": 5.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "3%",
+        "damage": "5-60 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 7% for every point in strength above 6.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Captain's Cutlass",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\hoddurform": {
+      "damage": [
+        {
+          "max": 60.0,
+          "min": 30.0,
+          "type": ""
+        }
+      ],
+      "fields": {
+        "critchance": "10%",
+        "damage": "30-60 : :",
+        "incurred": "Ignores 25% (multiplicative) of mechanical damage resistance when attacking organic targets. Damage increased by 8% for every point of strength above 7.",
+        "range": "Extended melee (1)",
+        "type": "Melee Weapon"
+      },
+      "page": "H\u00f8ddurform",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\lemurianblaster": {
+      "damage": [
+        {
+          "max": 60.0,
+          "min": 40.0,
+          "type": ""
+        }
+      ],
+      "fields": {
+        "critchance": "4%",
+        "damage": "40-60 : :",
+        "range": "9 (optimal: 6)",
+        "type": "Pistol"
+      },
+      "page": "Lemurian Blaster",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\lemurianspear": {
+      "damage": [
+        {
+          "max": 60.0,
+          "min": 45.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "6%",
+        "damage": "45-60 (Mechanical)",
+        "incurred": "Ignores 25% (multiplicative) of mechanical damage resistance when attacking organic targets. Damage increased by 8% for every point of strength above 7.",
+        "range": "Extended melee (2)",
+        "type": "Melee Weapon"
+      },
+      "page": "Lemurian Spear",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\obsidiansword": {
+      "damage": [
+        {
+          "max": 50.0,
+          "min": 30.0,
+          "type": ""
+        },
+        {
+          "max": 40.0,
+          "min": 25.0,
+          "type": ""
+        }
+      ],
+      "fields": {
+        "critchance": "10%",
+        "damage": "30-50 :Mechanical: 25-40 :",
+        "incurred": "Incurs 150% of mechanical damage resistance and threshold, but the mechanical damage that penetrates the armor is increased by 40% against organic targets. Damage increased by 7% for every point in strength above 6.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Black Blade",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\reddragon": {
+      "damage": [
+        {
+          "max": 40.0,
+          "min": 30.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "2%",
+        "damage": "30-40 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 7% for every point in strength above 6.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "Red Dragon",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarencrossbow": {
+      "damage": [
+        {
+          "max": 40.0,
+          "min": 20.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "6%",
+        "damage": "20-40 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold.",
+        "range": "14 (optimal: 9)",
+        "type": "Crossbow"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Crossbow",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarensabre": {
+      "damage": [
+        {
+          "max": 30.0,
+          "min": 15.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "15-30 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 7% for every point in strength above 6.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Sabre",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarenskerderknife": {
+      "damage": [
+        {
+          "max": 20.0,
+          "min": 10.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "8%",
+        "damage": "10-20 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 2% for every point in strength above 5.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Sk\u00e6rder Knife",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarenskerdersledgehammer": {
+      "damage": [
+        {
+          "max": 85.0,
+          "min": 35.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "4%",
+        "damage": "35-85 (Mechanical)",
+        "incurred": "Ignores mechanical damage threshold when attacking organic targets. Damage increased by 10% for every point in strength above 8.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Sk\u00e6rder Sledgehammer",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarenskerderspear": {
+      "damage": [
+        {
+          "max": 60.0,
+          "min": 20.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "9%",
+        "damage": "20-60 (Mechanical)",
+        "incurred": "Ignores 25% (multiplicative) of mechanical damage resistance when attacking organic targets. Damage increased by 8% for every point of strength above 7.",
+        "range": "Extended Melee (2)",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Sk\u00e6rder Spear",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarenskerdersword": {
+      "damage": [
+        {
+          "max": 50.0,
+          "min": 10.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "7%",
+        "damage": "10-50 (Mechanical)",
+        "incurred": "Incurs 125% of mechanical damage resistance and threshold. Damage increased by 7% for every point in strength above 6.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Sk\u00e6rder Sword",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarensledgehammer": {
+      "damage": [
+        {
+          "max": 65.0,
+          "min": 35.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "35-65 (Mechanical)",
+        "incurred": "Ignores mechanical damage threshold when attacking organic targets. Damage increased by 10% for every point in strength above 8.",
+        "range": "Melee",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Sledgehammer",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarenspear": {
+      "damage": [
+        {
+          "max": 38.0,
+          "min": 20.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "7%",
+        "damage": "20-38 (Mechanical)",
+        "incurred": "Ignores 25% (multiplicative) of mechanical damage resistance when attacking organic targets Damage increased by 8% for every point of strength above 7.",
+        "range": "Extended Melee (2)",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Spear",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarenstaffspear": {
+      "damage": [
+        {
+          "max": 32.0,
+          "min": 16.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "16-32 (Mechanical)",
+        "incurred": "Ignores 25% (multiplicative) of mechanical damage resistance when attacking organic targets Damage increased by 8% for every point of strength above 7.",
+        "range": "Extended Melee (1)",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Staff-spear",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\sormirbarenstaffspear2": {
+      "damage": [
+        {
+          "max": 36.0,
+          "min": 20.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "20-36 (Mechanical)",
+        "incurred": "Ignores 25% (multiplicative) of mechanical damage resistance when attacking organic targets Damage increased by 8% for every point of strength above 7.",
+        "range": "Extended Melee (1)",
+        "type": "Melee Weapon"
+      },
+      "page": "S\u00f8rmirb\u00e6ren Spirit Staff",
+      "source": "underrail-wiki-raw"
+    },
+    "weapons\\xpbl\\soundgun": {
+      "damage": [
+        {
+          "max": 55.0,
+          "min": 35.0,
+          "type": "Mechanical"
+        }
+      ],
+      "fields": {
+        "critchance": "5%",
+        "damage": "35-55 (Mechanical)",
+        "incurred": "Ignores mechanical damage threshold and half the mechanical damage resistance. Attempts to deal 35% of the original non-critical damage to the targets it passes through.",
+        "range": "9 (optimal: 7)",
+        "type": "Pistol"
+      },
+      "page": "Sonocaster",
+      "source": "underrail-wiki-raw"
+    }
+  },
+  "source": "Underrail Wiki item infobox combat fields"
+}

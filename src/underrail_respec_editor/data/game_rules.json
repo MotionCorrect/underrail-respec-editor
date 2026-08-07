@@ -1,0 +1,94 @@
+{
+  "source_references": {
+    "underrail_wiki": {
+      "name": "Underrail Wiki",
+      "url": "https://www.stygiansoftware.com/wiki/",
+      "usage_note": "Canonical public source for names, descriptions, and prerequisite text used by the wiki crawler."
+    },
+    "underrail_builder_remake": {
+      "repo": "cannedbean29/UnderrailBuilderRemake",
+      "url": "https://github.com/cannedbean29/UnderrailBuilderRemake",
+      "reviewed_commit": "4672038",
+      "reviewed_at": "2026-07-29",
+      "license_note": "No license file was present in the reviewed snapshot.",
+      "usage_note": "Reference only; source is linked and attributed but not vendored or copied wholesale. This catalog re-expresses selected public game computation rules in this project's own normalized JSON shape."
+    }
+  },
+  "leveling": {
+    "level_min": 1,
+    "known_builder_level_cap": 25,
+    "veteran_feat_level_min": 26,
+    "skill_cap": "10 + 5 * level",
+    "attribute_budget": "40 + floor(level / 4)",
+    "skill_budget": "120 + 40 * (level - 1)",
+    "notes": [
+      "The save editor treats budgets as editable targets because unspent point counters are not fully mapped.",
+      "The cap and budget formulas are used for validation/preview only; clone-first writes still preserve source saves."
+    ]
+  },
+  "skill_effective_formula": {
+    "attribute_modifier": "float32(1 + (effective_attribute - 4) * (0.085 if effective_attribute > 4 else 0.1))",
+    "base_component": "floor(allocated_points * attribute_modifier)",
+    "synergy_component": "sum floor(source_allocated_points * synergy_percent / 100), then reduce synergy points that would push base_component + synergies over skill_cap(level)",
+    "final_preview": "max(0, floor((base_component + capped_synergies + flat_bonus) * multiplier_percent / 100))",
+    "save_editor_scope": "Preview/audit only. The current writer preserves the loaded effective-minus-allocated delta instead of recomputing every bonus source."
+  },
+  "base_abilities": {
+    "Strength": {"id": "STR", "related_skills": ["Melee"]},
+    "Dexterity": {"id": "DEX", "related_skills": ["Melee", "Throwing", "Lockpicking", "Pickpocketing", "Traps"]},
+    "Agility": {"id": "AGI", "related_skills": ["Dodge", "Evasion", "Stealth"]},
+    "Constitution": {"id": "CON", "related_skills": []},
+    "Perception": {"id": "PER", "related_skills": ["Guns", "Heavy Guns", "Crossbows"]},
+    "Will": {"id": "WIL", "related_skills": ["Thought Control", "Psychokinesis", "Metathermics", "Temporal Manipulation", "Persuasion", "Intimidation"]},
+    "Intelligence": {"id": "INT", "related_skills": ["Hacking", "Mechanics", "Electronics", "Chemistry", "Biology", "Tailoring", "Mercantile"]}
+  },
+  "skills": {
+    "Guns": {"id": "gun", "related_attribute": "Perception", "synergies": {"Heavy Guns": 75}},
+    "Heavy Guns": {"id": "hea", "related_attribute": "Perception", "synergies": {"Guns": 65}},
+    "Throwing": {"id": "thr", "related_attribute": "Dexterity", "synergies": {}},
+    "Crossbows": {"id": "cro", "related_attribute": "Perception", "synergies": {}},
+    "Melee": {"id": "mel", "related_attribute": "max(Strength, Dexterity)", "synergies": {}},
+    "Dodge": {"id": "dod", "related_attribute": "Agility", "synergies": {"Evasion": 10}},
+    "Evasion": {"id": "eva", "related_attribute": "Agility", "synergies": {"Dodge": 10}},
+    "Stealth": {"id": "ste", "related_attribute": "Agility", "synergies": {}},
+    "Hacking": {"id": "hac", "related_attribute": "Intelligence", "synergies": {"Electronics": 10}},
+    "Lockpicking": {"id": "loc", "related_attribute": "Dexterity", "synergies": {"Mechanics": 10, "Traps": 10}},
+    "Pickpocketing": {"id": "pic", "related_attribute": "Dexterity", "synergies": {}},
+    "Traps": {"id": "tra", "related_attribute": "Dexterity", "synergies": {"Lockpicking": 10, "Mechanics": 10}},
+    "Mechanics": {"id": "mec", "related_attribute": "Intelligence", "synergies": {}},
+    "Electronics": {"id": "ele", "related_attribute": "Intelligence", "synergies": {}},
+    "Chemistry": {"id": "che", "related_attribute": "Intelligence", "synergies": {"Biology": 10}},
+    "Biology": {"id": "bio", "related_attribute": "Intelligence", "synergies": {"Chemistry": 15}},
+    "Tailoring": {"id": "tai", "related_attribute": "Intelligence", "synergies": {}},
+    "Thought Control": {"id": "tho", "related_attribute": "Will", "synergies": {"Psychokinesis": 10, "Metathermics": 10, "Temporal Manipulation": 10}},
+    "Psychokinesis": {"id": "psy", "related_attribute": "Will", "synergies": {"Thought Control": 10, "Metathermics": 10, "Temporal Manipulation": 10}},
+    "Metathermics": {"id": "met", "related_attribute": "Will", "synergies": {"Thought Control": 10, "Psychokinesis": 10, "Temporal Manipulation": 10}},
+    "Temporal Manipulation": {"id": "tem", "related_attribute": "Will", "synergies": {"Thought Control": 10, "Psychokinesis": 10, "Metathermics": 10}},
+    "Persuasion": {"id": "per", "related_attribute": "Will", "synergies": {"Mercantile": 20}},
+    "Intimidation": {"id": "ind", "related_attribute": "max(Will, Strength)", "synergies": {"Persuasion": 10}},
+    "Mercantile": {"id": "mer", "related_attribute": "Intelligence", "synergies": {"Persuasion": 20}}
+  },
+  "derived_stats": {
+    "Health": {"base_formula": "40 + 4 * level, scaled by Constitution modifier", "notable_modifiers": ["Psi Empathy reduces base health", "Juggernaut and equipment can add or multiply health"]},
+    "Psi Pool": {"base_formula": "100 before feats/equipment, only meaningful with Psi Empathy", "notable_modifiers": ["Expanded Psi Capacitance increases reserve/pool related values", "Neurology and gear can add flat psi"]},
+    "Psi Regen": {"base_formula": "5 + floor((effective Will + effective Intelligence) / 2)", "notable_modifiers": ["Mantra and tattoos can add regeneration"]},
+    "Psi Reserve": {"base_formula": "5 * psi pool", "notable_modifiers": ["Expanded Psi Capacitance can multiply reserve"]},
+    "Psi Slots": {"base_formula": "min(2 + floor(slot_attribute / 2), 8), where slot_attribute is normally Intelligence or Will with Forceful Innervation", "notable_modifiers": []},
+    "Movement Points": {"base_formula": "max(15 + 3 * effective Agility, 30)", "notable_modifiers": ["Strider, tattoos, and equipment can add movement points"]},
+    "Initiative": {"base_formula": "5 + effective Dexterity + effective Agility", "notable_modifiers": ["Paranoia, Gunslinger, Trigger Happy, and equipment can add initiative"]},
+    "Fortitude": {"base_formula": "(8 + 4 * level) scaled by a weighted Constitution/Strength/Will modifier", "notable_modifiers": ["Thick Skull specialization and equipment can add fortitude"]},
+    "Resolve": {"base_formula": "(8 + 4 * level) scaled by Will modifier", "notable_modifiers": ["Iron Will, Body Horror, Philosophy feats, tattoos, and equipment can modify resolve"]},
+    "Detection": {"base_formula": "(10 + 5 * level) scaled by Perception modifier", "notable_modifiers": ["Paranoia, Fine Tuned, tattoos, and equipment can modify detection"]},
+    "Trap Detection": {"base_formula": "max(floor(0.75 * detection), floor(0.50 * detection + 0.75 * effective Traps))", "notable_modifiers": []},
+    "Carry Weight": {"base_formula": "100 + 10 * effective Strength", "notable_modifiers": ["Pack Rathound, Beast of Burden, specialization, and equipment can add carry weight"]}
+  },
+  "builder_reference_inventory": {
+    "base_abilities_reviewed": 7,
+    "skills_reviewed": 24,
+    "feat_predicates_reviewed": 233,
+    "specializations_reviewed": 211,
+    "item_modifier_entries_reviewed": 101,
+    "derived_stat_formulas_reviewed": 12,
+    "integration_note": "Only compact, factual summaries and formulas are represented here. Full feat predicates/specializations should be independently normalized from wiki text and save fixtures before becoming write-gating logic."
+  }
+}

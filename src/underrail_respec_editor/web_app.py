@@ -23,6 +23,7 @@ import json
 import mimetypes
 import os
 import shutil
+import struct
 import sys
 import threading
 import time
@@ -37,7 +38,7 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.parse import parse_qs, urlparse
 
 from .save_tool import ATTRS, SKILLS, Save
-from . import runtime_mods
+from . import inventory_tool, runtime_mods
 
 DEFAULT_PORT = 8765
 DEFAULT_SAVES_DIR = Path.home() / "Documents" / "My Games" / "Underrail" / "Saves"
@@ -47,6 +48,7 @@ FEAT_IDS_PATH = DATA_DIR / "feat_ids.json"
 FEAT_RULES_PATH = DATA_DIR / "feat_rules.json"
 TOOLTIPS_PATH = DATA_DIR / "wiki_tooltips.json"
 COMMUNITY_MODS_PATH = DATA_DIR / "community_mods.json"
+GAME_RULES_PATH = DATA_DIR / "game_rules.json"
 STATIC_PREFIX = "/_next/"
 
 
@@ -156,10 +158,247 @@ def load_community_mods() -> Dict[str, Any]:
     return {"source": {}, "mods": [], "design_implications": []}
 
 
+def load_game_rules() -> Dict[str, Any]:
+    if GAME_RULES_PATH.is_file():
+        with GAME_RULES_PATH.open("r", encoding="utf-8") as fh:
+            return json.load(fh)
+    return {"source_references": {}, "leveling": {}, "skills": {}, "derived_stats": {}}
+
+
+def _f32(value: float) -> float:
+    return struct.unpack("<f", struct.pack("<f", float(value)))[0]
+
+
+def base_ability_modifier(effective_attribute: int) -> float:
+    attribute = int(effective_attribute)
+    step = 0.085 if attribute > 4 else 0.1
+    return _f32(1 + (attribute - 4) * step)
+
+
+def skill_cap_for_level(level: Optional[int]) -> Optional[int]:
+    return None if level is None else 10 + 5 * int(level)
+
+
+def _related_attribute_value(skill_name: str, attributes: Dict[str, int]) -> int:
+    rule = GAME_RULES.get("skills", {}).get(skill_name, {})
+    related = rule.get("related_attribute")
+    if related == "max(Strength, Dexterity)":
+        return max(int(attributes.get("Strength", 0)), int(attributes.get("Dexterity", 0)))
+    if related == "max(Will, Strength)":
+        return max(int(attributes.get("Will", 0)), int(attributes.get("Strength", 0)))
+    if related:
+        return int(attributes.get(related, 0))
+    return 0
+
+
+def preview_effective_skill(
+    skill_name: str,
+    allocated: int,
+    attributes: Dict[str, int],
+    level: Optional[int] = None,
+    allocated_skills: Optional[Dict[str, int]] = None,
+    flat_bonus: int = 0,
+    multiplier_percent: int = 100,
+) -> int:
+    """Preview Underrail's effective-skill math from normalized rule metadata.
+
+    This is an audit/helper path, not the writer's source of truth. The writer
+    still preserves the loaded effective-minus-allocated delta unless a future
+    fixture-backed rule engine proves every bonus source.
+    """
+    allocated_skills = allocated_skills or {}
+    rule = GAME_RULES.get("skills", {}).get(skill_name)
+    if not rule:
+        raise KeyError(f"No game-rule entry for skill {skill_name!r}")
+    modifier = base_ability_modifier(_related_attribute_value(skill_name, attributes))
+    base_component = int(int(allocated) * modifier)
+    synergies = 0
+    for source_skill, percent in rule.get("synergies", {}).items():
+        synergies += int(int(allocated_skills.get(source_skill, 0)) * int(percent) / 100)
+    cap = skill_cap_for_level(level)
+    if cap is not None:
+        synergies = max(0, synergies - max(0, base_component + synergies - cap))
+    effective = int((base_component + synergies + int(flat_bonus)) * int(multiplier_percent) / 100)
+    return max(0, effective)
+
+
+
+def _rounded_damage(parts: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    out = []
+    for part in parts:
+        row = dict(part)
+        if row.get("min") is not None:
+            row["min"] = round(float(row["min"]), 1)
+        if row.get("max") is not None:
+            row["max"] = round(float(row["max"]), 1)
+        out.append(row)
+    return out
+
+
+def psi_damage_estimates(skills: Dict[str, Dict[str, int]]) -> List[Dict[str, Any]]:
+    tc = int(skills.get("Thought Control", {}).get("effective", 0))
+    pk = int(skills.get("Psychokinesis", {}).get("effective", 0))
+    mt = int(skills.get("Metathermics", {}).get("effective", 0))
+    tm = int(skills.get("Temporal Manipulation", {}).get("effective", 0))
+    return [
+        {
+            "name": "Neural Overload",
+            "school": "Thought Control",
+            "effective_skill": tc,
+            "damage": _rounded_damage([{"type": "electrical/mental", "min": 10 + 0.2 * tc, "max": 11 + 0.4 * tc}]),
+            "formula": "10-11 plus 0.2-0.4 per effective Thought Control; target Intelligence/Resolve and feats can further modify it.",
+            "source": "Underrail Wiki: Neural Overload",
+        },
+        {
+            "name": "Electrokinesis",
+            "school": "Psychokinesis",
+            "effective_skill": pk,
+            "damage": _rounded_damage([{"type": "electrical", "min": 16 + 0.15 * pk, "max": 29 + 0.45 * pk}]),
+            "formula": "16-29 plus 0.15-0.45 per effective Psychokinesis; jump damage drops by 20% of original per jump.",
+            "source": "Underrail Wiki: Electrokinesis",
+        },
+        {
+            "name": "Pyrokinesis",
+            "school": "Metathermics",
+            "effective_skill": mt,
+            "damage": _rounded_damage([{"type": "heat", "min": 30 + 0.4 * mt, "max": 42 + 0.85 * mt}]),
+            "formula": "30-42 plus 0.4-0.85 per effective Metathermics; AoE falloff/resistance not included.",
+            "source": "Underrail Wiki: Pyrokinesis",
+        },
+        {
+            "name": "Cryokinetic Orb shard",
+            "school": "Metathermics",
+            "effective_skill": mt,
+            "damage": _rounded_damage([
+                {"type": "cold", "min": 5 + 0.1 * mt, "max": 5 + 0.2 * mt},
+                {"type": "mechanical", "min": 5 + 0.125 * mt, "max": 5 + 0.275 * mt},
+            ]),
+            "formula": "Per shard: cold 5 + 0.1-0.2/skill and mechanical 5 + 0.125-0.275/skill.",
+            "source": "Underrail Wiki: Cryokinetic Orb",
+        },
+        {
+            "name": "Thermodynamic Destabilization",
+            "school": "Metathermics",
+            "effective_skill": mt,
+            "damage": [],
+            "target_health_percent": min(100.0, round(30 + 0.5 * mt, 1)),
+            "formula": "Explosion total equals 30% of afflicted target health + 0.5% per effective Metathermics, capped at 100%.",
+            "source": "Underrail Wiki: Thermodynamic Destabilization",
+        },
+        {
+            "name": "Temporal Distortion",
+            "school": "Temporal Manipulation",
+            "effective_skill": tm,
+            "damage": _rounded_damage([
+                {"type": "mechanical", "min": 5 + 0.05 * tm, "max": 6 + 0.1 * tm},
+                {"type": "energy", "min": 5 + 0.05 * tm, "max": 6 + 0.1 * tm},
+            ]),
+            "formula": "Best-effort preview from listed 5-6 mechanical + 5-6 energy scaling with Temporal Manipulation; exact wiki per-skill table is not yet normalized.",
+            "source": "Underrail Wiki: Temporal Distortion",
+        },
+    ]
+
+
+def weapon_skill_scalars(skills: Dict[str, Dict[str, int]]) -> Dict[str, Dict[str, Any]]:
+    rules = {
+        "Guns": (0.7, "Base Damage * (1 + 0.7 * effective Guns / 100); light guns can use 0.5 instead."),
+        "Heavy Guns": (0.7, "Best-effort same weapon-skill scalar family as Guns until heavy-gun-specific data is normalized."),
+        "Crossbows": (0.7, "Base Damage * (1 + 0.7 * effective Crossbows / 100)."),
+        "Melee": (0.7, "Best-effort melee skill scalar; strength, weapon type, feats, and special attacks can further modify damage."),
+        "Throwing": (0.7, "Best-effort throwing-knife scalar; grenade damage is item-defined and not scaled this way."),
+    }
+    out: Dict[str, Dict[str, Any]] = {}
+    for skill, (coef, formula) in rules.items():
+        eff = int(skills.get(skill, {}).get("effective", 0))
+        out[skill] = {
+            "effective_skill": eff,
+            "normal_weapon_damage_multiplier": round(1 + coef * eff / 100.0, 4),
+            "formula": formula,
+            "source": "Underrail Wiki skill pages / best-effort normalized preview",
+        }
+    return out
+
+
+def _skill_for_equipped_weapon(item: Dict[str, Any]) -> Optional[str]:
+    typ = (item.get("wiki_type") or "").lower()
+    key = (item.get("datafile_key") or "").lower()
+    name = (item.get("name") or "").lower()
+    if "crossbow" in typ or "crossbow" in key or "crossbow" in name:
+        return "Crossbows"
+    if "melee" in typ or "knife" in key or "knife" in name:
+        return "Melee"
+    if "gun" in typ or "pistol" in typ or "rifle" in typ:
+        return "Guns"
+    return None
+
+
+def equipped_weapon_damage_estimates(equipped: Dict[str, Any], skills: Dict[str, Dict[str, int]]) -> List[Dict[str, Any]]:
+    scalars = weapon_skill_scalars(skills)
+    rows = []
+    for item in equipped.get("slots", []):
+        if not item.get("slot", "").startswith("weapon_") or not item.get("equipped"):
+            continue
+        combat = item.get("combat") or {}
+        base_damage = combat.get("damage") or []
+        skill = _skill_for_equipped_weapon(item)
+        if not base_damage or not skill:
+            rows.append({"slot": item.get("slot"), "name": item.get("name"), "skill": skill, "base_damage": base_damage, "estimated_damage": [], "note": "No normalized base damage or skill mapping available yet."})
+            continue
+        mult = scalars[skill]["normal_weapon_damage_multiplier"]
+        rows.append({
+            "slot": item.get("slot"),
+            "name": item.get("name"),
+            "skill": skill,
+            "effective_skill": scalars[skill]["effective_skill"],
+            "multiplier": mult,
+            "base_damage": base_damage,
+            "estimated_damage": _rounded_damage([{**part, "min": float(part["min"]) * mult, "max": float(part["max"]) * mult} for part in base_damage]),
+            "formula": scalars[skill]["formula"],
+            "source": (combat.get("source") or "underrail-wiki-raw") + "; excludes crits, special attacks, ammo, target armor/resistance, and conditional feat/equipment modifiers.",
+        })
+    return rows
+
+
+def build_damage_estimates(skills: Dict[str, Dict[str, int]], equipped: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "weapon_skill_scalars": weapon_skill_scalars(skills),
+        "psi_abilities": psi_damage_estimates(skills),
+        "equipped_weapon_estimates": equipped_weapon_damage_estimates(equipped, skills),
+        "notes": [
+            "Read-only estimate panel. It uses effective skills from the save and normalized wiki formulas, not live combat state.",
+            "Damage excludes target resistances/thresholds, crits, special attacks, ammo effects, temporary buffs, and many feat/equipment conditionals unless explicitly stated.",
+        ],
+    }
+
+
+def skill_rules_preview(
+    skill_name: str,
+    allocated: int,
+    effective: int,
+    attributes: Dict[str, Dict[str, int]],
+    skills: Dict[str, Dict[str, int]],
+    level: Optional[int],
+) -> Dict[str, Any]:
+    effective_attrs = {name: int(values["modified"]) for name, values in attributes.items()}
+    allocated_skills = {name: int(values["allocated"]) for name, values in skills.items()}
+    computed = preview_effective_skill(skill_name, allocated, effective_attrs, level, allocated_skills)
+    rule = GAME_RULES.get("skills", {}).get(skill_name, {})
+    return {
+        "related_attribute": rule.get("related_attribute"),
+        "attribute_value": _related_attribute_value(skill_name, effective_attrs),
+        "attribute_modifier_percent": round(base_ability_modifier(_related_attribute_value(skill_name, effective_attrs)) * 100),
+        "synergies": rule.get("synergies", {}),
+        "computed_from_allocated": computed,
+        "loaded_effective": int(effective),
+        "unexplained_delta": int(effective) - computed,
+    }
+
+
 FEAT_RULES = load_feat_rules()
 FEAT_IDS = load_feat_ids()
 TOOLTIPS = load_tooltips()
 COMMUNITY_MODS = load_community_mods()
+GAME_RULES = load_game_rules()
 ID_TO_FEAT_NAME = {v: k for k, v in FEAT_IDS.items()}
 
 
@@ -252,6 +491,409 @@ def apply_feat_replacements_to_dat(dat_path: Path, replacements: List[Dict[str, 
     return list(reversed(changes))
 
 
+
+
+RELATION_LABELS = {
+    0: "Likely hostile",
+    1: "Neutral / limited",
+    2: "Friendly / non-hostile",
+    3: "Self/allied",
+    4: "Special/scripted",
+}
+
+KNOWN_FACTION_PREFIXES = (
+    "campHathor", "coreCity", "freeDrones", "protectorate", "foundry", "junkyard",
+    "blackEels", "scrappers", "faceless", "rathound", "player", "sgs", "oculus",
+    "drones", "pirates", "expedition", "lunatic", "bandit", "native", "mutie",
+)
+
+
+def _is_ascii_identifier(raw: bytes) -> bool:
+    return bool(raw) and all(32 <= c < 127 for c in raw)
+
+
+def _looks_like_faction_id(text: str) -> bool:
+    if not text or len(text) > 64:
+        return False
+    if text in {"player", "destructables"}:
+        return True
+    return any(text.startswith(prefix) for prefix in KNOWN_FACTION_PREFIXES) or ("_" in text and not text.startswith("messages"))
+
+
+def _find_faction_object_markers(payload: bytes) -> List[Dict[str, Any]]:
+    markers: List[Dict[str, Any]] = []
+    for pos in range(0, max(0, len(payload) - 8)):
+        if payload[pos] != 1:
+            continue
+        id_len = payload[pos + 1]
+        if not (1 <= id_len <= 64):
+            continue
+        id_start = pos + 2
+        id_end = id_start + id_len
+        if id_end + 1 + id_len + 1 >= len(payload):
+            continue
+        faction_id_raw = payload[id_start:id_end]
+        if not _is_ascii_identifier(faction_id_raw):
+            continue
+        if payload[id_end] != id_len or payload[id_end + 1:id_end + 1 + id_len] != faction_id_raw:
+            continue
+        display_len_pos = id_end + 1 + id_len
+        display_len = payload[display_len_pos]
+        display_start = display_len_pos + 1
+        display_end = display_start + display_len
+        if not (1 <= display_len <= 96) or display_end >= len(payload):
+            continue
+        display_raw = payload[display_start:display_end]
+        if not _is_ascii_identifier(display_raw):
+            continue
+        faction_id = faction_id_raw.decode("ascii", "replace")
+        if not _looks_like_faction_id(faction_id):
+            continue
+        markers.append({
+            "offset": pos,
+            "relations_start": display_end,
+            "id": faction_id,
+            "name": display_raw.decode("ascii", "replace"),
+        })
+    # Deduplicate overlapping false starts.
+    out: List[Dict[str, Any]] = []
+    last = -999
+    for marker in sorted(markers, key=lambda m: m["offset"]):
+        if marker["offset"] - last > 4:
+            out.append(marker)
+            last = marker["offset"]
+    return out
+
+
+
+
+FLAG_PREFIX_MEANINGS = {
+    "loc": "location/local script state",
+    "frag": "quest fragment / scripted encounter state",
+    "npc": "NPC dialogue or lifecycle state",
+    "ch": "Camp Hathor quest/dialogue state (observed)",
+    "powSrc": "power source / switchable object state",
+    "xpbl": "Expedition DLC / Black Sea content state",
+    "gms": "GMS compound state",
+    "fls": "Foundry/Lower-caves style quest state (inferred)",
+    "dungeon": "dungeon instance/navigation state",
+    "bulkDiscovery": "map discovery marker",
+    "Event": "timed/random event state",
+}
+
+# Minimal decoded map labels from the Underrail wiki plus observed save strings.
+# This is intentionally small and grows as we verify areas from saves/wiki.
+KNOWN_AREA_IDS = {
+    "cvw41": "Isaac's River",
+    "cvw42": "Isaac's River",
+    "cvw43": "Isaac's River",
+    "cvw44": "Isaac's River",
+    "cvw45": "Isaac's River",
+    "cvw46": "Isaac's River",
+    "cvw47": "Isaac's River",
+    "cvw48": "Isaac's River",
+    "cvw49": "Isaac's River",
+    "cvw50": "Isaac's River",
+    "cvw51": "Isaac's River",
+    "cvw52": "Isaac's River",
+    "cvw53": "Isaac's River",
+    "dun_wasteWater": "Wastewater Processing Plant / mutant refuge",
+    "mushroomCoveBase": "Mushroom Cove base",
+    "gms_l3": "GMS compound level 3",
+    "xpbl_ojyc": "Black Sea / Expedition OJYC content",
+    "fls": "Foundry / Rathound King questline",
+}
+
+AREA_FACTION_HINTS = {
+    "cvw47": [("campHathor", "Camp Hathor / Hathorians", "wiki+save: Isaac's River Hathorian camp"), ("campHathor_animals", "Camp Hathor animals", "save relation neighbor")],
+    "dun_wasteWater": [("dun_wasteWater", "Dungeon WasteWater", "exact faction id"), ("dun_wasteWater_cameras", "Dungeon WasteWater - Cameras", "same area"), ("dun_wasteWater_slaves", "Dungeon WasteWater - Slaves", "same area")],
+    "mushroomCoveBase": [("mushroomCove_hunterWolo", "MushroomCove NE - Hunter Wolo", "nearest save faction id; bug faction not mapped yet")],
+    "gms_l3": [("gms_intruders", "GMS intruders / raiders", "raider marker likely maps to GMS intruder faction"), ("gms_intruders2", "GMS intruders 2", "same encounter family"), ("gms_l2_sentries", "GMS sentries", "nearby GMS hostile faction")],
+    "xpbl_ojyc": [("blackLake_muties", "Black Lake Muties", "Expedition muties; low-confidence area/faction hint"), ("tchortists_beetle", "Tchortists Beetle", "coil-spider/beetle-like hostile fauna hint, low confidence")],
+    "fls": [("rathoundKing", "Rathound King", "rat king kill marker / questline")],
+}
+
+MARKER_FACTION_HINTS = {
+    "loc_cvw47_allHathoriansKilled": [("campHathor", "Camp Hathor / Hathorians", "exact marker text names Hathorians"), ("campHathor_animals", "Camp Hathor animals", "same faction family")],
+    "ch_killRathoundKing": [("rathoundKing", "Rathound King", "exact quest target"), ("rathoundPack", "Rathound Pack", "related animal faction")],
+    "ch_killRathoundKingStarted": [("rathoundKing", "Rathound King", "exact quest target"), ("rathoundPack", "Rathound Pack", "related animal faction")],
+    "ch_killRathoundKingCompleted": [("rathoundKing", "Rathound King", "exact quest target"), ("rathoundPack", "Rathound Pack", "related animal faction")],
+    "fls_ratkingKilled": [("rathoundKing", "Rathound King", "rat king / Rathound King wording"), ("rathoundPack", "Rathound Pack", "related animal faction")],
+    "gms_l3_raidersKilled": [("gms_intruders", "GMS intruders / raiders", "raider marker likely maps to GMS intruder faction"), ("gms_intruders2", "GMS intruders 2", "same encounter family")],
+    "gms_l3_allRaidersDead": [("gms_intruders", "GMS intruders / raiders", "raider marker likely maps to GMS intruder faction"), ("gms_intruders2", "GMS intruders 2", "same encounter family")],
+    "frag_dun_wasteWater_killedBoss": [("dun_wasteWater", "Dungeon WasteWater", "exact area faction id"), ("old_junkyard_muties", "Old Junkyard Muties", "mutie/refuge faction family")],
+    "frag_dun_wasteWater_corpseGender": [("dun_wasteWater", "Dungeon WasteWater", "same area metadata")],
+    "xpbl_ojyc_mutiesKilled": [("blackLake_muties", "Black Lake Muties", "Expedition muties; low-confidence match")],
+    "xpbl_ojyc_coilSpidersKilled": [("tchortists_beetle", "Tchortists Beetle", "hostile creature/faction-family hint, low confidence")],
+    "npc_elwood_dead": [("junkyard_elwoods_house", "Junkyard Elwood's House", "NPC name exact to faction id")],
+    "npc_jy_vilmer_dead": [("junkyard", "Junkyard", "JY prefix suggests Junkyard; exact faction not mapped")],
+    "npc_lux_gerhardPage_dead": [("unknown", "Unknown NPC/page state", "lifecycle marker; faction not mapped yet")],
+}
+
+KILL_MARKER_WORDS = ("kill", "killed", "dead", "corpse", "all", "boss")
+AREA_MARKER_PREFIXES = ("loc_", "frag_", "npc_", "ch_", "powSrc_", "xpbl_", "gms_", "fls_", "dungeon_", "bulkDiscovery_", "Event_")
+
+
+def serialized_string_records(payload: bytes) -> List[Dict[str, Any]]:
+    """Extract readable length-prefixed strings from the unpacked global.dat stream.
+
+    Underrail's serialized graph frequently encodes strings as:
+      0x06 <record-id:int32> <length:byte> <ascii bytes> <value/ref...>
+    This is heuristic, but it is stable enough for read-only inspection of flags.
+    """
+    records: List[Dict[str, Any]] = []
+    for pos in range(0, max(0, len(payload) - 8)):
+        if payload[pos] != 0x06:
+            continue
+        strlen_pos = pos + 5
+        strlen = payload[strlen_pos]
+        if not (3 <= strlen <= 96):
+            continue
+        start = strlen_pos + 1
+        end = start + strlen
+        if end >= len(payload):
+            continue
+        raw = payload[start:end]
+        if not _is_ascii_identifier(raw):
+            continue
+        text = raw.decode("ascii", "replace")
+        records.append({
+            "offset": pos,
+            "string_offset": start,
+            "length": strlen,
+            "text": text,
+            "value_byte": payload[end],
+            "after_hex": bytes(payload[end:end + 12]).hex(),
+        })
+    return records
+
+
+def decode_marker_prefix(text: str) -> Tuple[str, str]:
+    for prefix in sorted(FLAG_PREFIX_MEANINGS, key=len, reverse=True):
+        token = prefix + "_"
+        if text.startswith(token):
+            return prefix, FLAG_PREFIX_MEANINGS[prefix]
+    if "_" in text:
+        prefix = text.split("_", 1)[0]
+        return prefix, "unknown/custom script namespace"
+    return "", "unprefixed saved string"
+
+
+def area_id_for_marker(text: str) -> Optional[str]:
+    lower = text.lower()
+    for area_id in sorted(KNOWN_AREA_IDS, key=len, reverse=True):
+        if area_id.lower() in lower:
+            return area_id
+    return None
+
+
+def faction_hints_for_marker(text: str, area_id: Optional[str]) -> List[Dict[str, str]]:
+    hints = []
+    seen = set()
+    for fid, name, reason in MARKER_FACTION_HINTS.get(text, []):
+        hints.append({"id": fid, "name": name, "reason": reason, "confidence": "medium" if fid != "unknown" else "low"})
+        seen.add(fid)
+    if area_id:
+        for fid, name, reason in AREA_FACTION_HINTS.get(area_id, []):
+            if fid not in seen:
+                hints.append({"id": fid, "name": name, "reason": reason, "confidence": "low"})
+                seen.add(fid)
+    # Token-level fallbacks for newly discovered markers.
+    lower = text.lower()
+    fallback_rules = [
+        ("hathor", ("campHathor", "Camp Hathor / Hathorians", "token contains Hathor", "medium")),
+        ("rathound", ("rathoundPack", "Rathound Pack", "token contains rathound", "low")),
+        ("mutie", ("blackLake_muties", "Muties / mutant faction family", "token contains mutie", "low")),
+        ("mutant", ("old_junkyard_mutants", "Old Junkyard Mutants", "token contains mutant", "low")),
+        ("raider", ("gms_intruders", "GMS intruders / raiders", "token contains raider", "low")),
+    ]
+    for token, (fid, name, reason, confidence) in fallback_rules:
+        if token in lower and fid not in seen:
+            hints.append({"id": fid, "name": name, "reason": reason, "confidence": confidence})
+            seen.add(fid)
+    return hints
+
+
+def marker_category(text: str) -> str:
+    lower = text.lower()
+    if any(word in lower for word in ("kill", "killed", "dead", "corpse")):
+        return "kill/death marker"
+    if lower.startswith("powsrc_"):
+        return "power/object state"
+    if lower.startswith("event_") or "starttime" in lower:
+        return "event timer"
+    if lower.startswith("bulkdiscovery_"):
+        return "discovery marker"
+    if any(word in lower for word in ("met", "asked", "know", "talk", "report")):
+        return "dialogue/knowledge marker"
+    return "area/script marker"
+
+
+def marker_relevance(text: str) -> bool:
+    lower = text.lower()
+    if text.startswith(AREA_MARKER_PREFIXES):
+        if any(word in lower for word in ("kill", "dead", "corpse", "hathor", "cvw", "waste", "mut", "sewer", "mushroom", "gms", "hopsy", "coltrane")):
+            return True
+    return False
+
+
+def extract_area_markers_from_payload(payload: bytes) -> Dict[str, Any]:
+    markers = []
+    for rec in serialized_string_records(payload):
+        text = rec["text"]
+        if not marker_relevance(text):
+            continue
+        prefix, meaning = decode_marker_prefix(text)
+        area_id = area_id_for_marker(text)
+        markers.append({
+            "text": text,
+            "offset": rec["offset"],
+            "string_offset": rec["string_offset"],
+            "length": rec["length"],
+            "value_byte": rec["value_byte"],
+            "after_hex": rec["after_hex"],
+            "prefix": prefix,
+            "prefix_meaning": meaning,
+            "area_id": area_id,
+            "area_label": KNOWN_AREA_IDS.get(area_id or "", ""),
+            "mapped_factions": faction_hints_for_marker(text, area_id),
+            "category": marker_category(text),
+            "confidence": "heuristic/read-only",
+        })
+    markers.sort(key=lambda m: (m["area_label"] or "~", m["category"], m["text"], m["offset"]))
+    kill_markers = [m for m in markers if m["category"] == "kill/death marker"]
+    by_area: Dict[str, Dict[str, Any]] = {}
+    for marker in markers:
+        key = marker["area_id"] or "unknown"
+        area = by_area.setdefault(key, {
+            "area_id": marker["area_id"] or "unknown",
+            "area_label": marker["area_label"] or "Unknown / unmapped area",
+            "markers": [],
+            "kill_markers": [],
+            "mapped_factions": [],
+        })
+        area["markers"].append(marker)
+        for hint in marker.get("mapped_factions", []):
+            if hint["id"] not in {item["id"] for item in area["mapped_factions"]}:
+                area["mapped_factions"].append(hint)
+        if marker["category"] == "kill/death marker":
+            area["kill_markers"].append(marker)
+    return {
+        "markers": markers[:300],
+        "kill_markers": kill_markers[:120],
+        "areas": sorted(by_area.values(), key=lambda a: (a["area_label"], a["area_id"])),
+        "prefix_legend": FLAG_PREFIX_MEANINGS,
+        "area_legend": KNOWN_AREA_IDS,
+        "faction_hint_legend": {"area_hints": AREA_FACTION_HINTS, "marker_hints": MARKER_FACTION_HINTS},
+        "notes": [
+            "Read-only heuristic extraction from unpacked global.dat serialized strings.",
+            "value_byte is the byte immediately after the serialized string; booleans often appear as 0/1, counters may be small ints or multi-byte values.",
+            "CVW41-CVW53 are mapped from the Underrail wiki as Isaac's River; CVW47 is the tile that produced loc_cvw47_allHathoriansKilled.",
+        ],
+    }
+
+
+def read_area_markers(path: str | Path) -> Dict[str, Any]:
+    _, payload = unpack_dat(Path(path))
+    return extract_area_markers_from_payload(bytes(payload))
+
+
+def find_faction_relations_in_payload(payload: bytes) -> List[Dict[str, Any]]:
+    """Best-effort read-only extraction of saved faction relation tables.
+
+    Underrail serializes faction definitions into global.dat with repeated
+    length-prefixed faction ids and 32-bit relation enum values.  This parser is
+    intentionally conservative and read-only: it reports raw player relation
+    codes and offsets for visualization, but does not claim enough certainty to
+    patch them.
+    """
+    markers = _find_faction_object_markers(payload)
+    rows: List[Dict[str, Any]] = []
+    for index, marker in enumerate(markers):
+        end = markers[index + 1]["offset"] if index + 1 < len(markers) else min(len(payload), marker["relations_start"] + 2000)
+        segment = payload[marker["relations_start"]:end]
+        relations = []
+        cursor = 0
+        while cursor < len(segment) - 10:
+            rel_len = segment[cursor]
+            if 1 <= rel_len <= 64 and cursor + 1 + rel_len + 8 <= len(segment):
+                raw = segment[cursor + 1:cursor + 1 + rel_len]
+                if _is_ascii_identifier(raw):
+                    rel_id = raw.decode("ascii", "replace")
+                    value_offset = marker["relations_start"] + cursor + 1 + rel_len
+                    raw_value = segment[cursor + 1 + rel_len:cursor + 1 + rel_len + 4]
+                    tail = segment[cursor + 1 + rel_len + 4:cursor + 1 + rel_len + 8]
+                    value = int.from_bytes(raw_value, "little", signed=True)
+                    if tail == b"\xff\xff\xff\xff" and -5 <= value <= 10 and _looks_like_faction_id(rel_id):
+                        relations.append({
+                            "target": rel_id,
+                            "value": value,
+                            "label": RELATION_LABELS.get(value, f"Unknown code {value}"),
+                            "value_offset": value_offset,
+                        })
+                        cursor += 1 + rel_len + 8
+                        continue
+            cursor += 1
+        player = next((rel for rel in relations if rel["target"] == "player"), None)
+        if player or any(fid in marker["id"] for fid in ("campHathor", "coreCity", "freeDrones", "protectorate", "foundry", "junkyard")):
+            rows.append({
+                "id": marker["id"],
+                "name": marker["name"],
+                "offset": marker["offset"],
+                "player_relation": player,
+                "relations": relations[:80],
+                "confidence": "heuristic",
+            })
+    return rows
+
+
+def read_faction_relations(path: str | Path) -> List[Dict[str, Any]]:
+    _, payload = unpack_dat(Path(path))
+    return find_faction_relations_in_payload(bytes(payload))
+
+
+
+
+def player_relation_map(rows: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+    return {row["id"]: row for row in rows if row.get("player_relation") is not None}
+
+
+def faction_relation_deltas(current_rows: List[Dict[str, Any]], baseline_rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    current = player_relation_map(current_rows)
+    baseline = player_relation_map(baseline_rows)
+    deltas: List[Dict[str, Any]] = []
+    for faction_id in sorted(set(current) & set(baseline)):
+        cur = current[faction_id]["player_relation"]
+        base = baseline[faction_id]["player_relation"]
+        if cur["value"] != base["value"]:
+            deltas.append({
+                "id": faction_id,
+                "name": current[faction_id].get("name") or baseline[faction_id].get("name") or faction_id,
+                "baseline_value": base["value"],
+                "baseline_label": base["label"],
+                "current_value": cur["value"],
+                "current_label": cur["label"],
+                "current_value_offset": cur.get("value_offset"),
+            })
+    return deltas
+
+
+def sibling_baseline_faction_comparison(save_dat_path: Path, current_rows: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    save_folder = save_dat_path.parent
+    saves_root = save_folder.parent
+    for baseline_name in ("SortingNightmare", "NewEpicEnemies"):
+        baseline_dat = saves_root / baseline_name / "global.dat"
+        if baseline_dat.is_file() and baseline_dat.resolve() != save_dat_path.resolve():
+            baseline_rows = read_faction_relations(baseline_dat)
+            return {
+                "baseline_name": baseline_name,
+                "baseline_path": str(baseline_dat),
+                "deltas": faction_relation_deltas(current_rows, baseline_rows),
+                "note": "Automatic comparison against a nearby known-good save, if present. Read-only; no faction edits are applied.",
+            }
+    return None
+
+
 def display_names_from_feat_records(records: List[Dict[str, Any]]) -> List[str]:
     out = []
     for rec in records:
@@ -291,12 +933,28 @@ def analyze_target(path: str | Path, level: Optional[int] = None) -> Dict[str, A
         allocated, effective = sv.get_skill(name)
         skills[name] = {"allocated": allocated, "effective": effective, "bonus": effective - allocated}
     inferred_level = level or infer_level_for_path(path)
+    for name in SKILLS:
+        skills[name]["rules_preview"] = skill_rules_preview(
+            name,
+            skills[name]["allocated"],
+            skills[name]["effective"],
+            attrs,
+            skills,
+            inferred_level,
+        )
+
     attr_total = sum(v["base"] for v in attrs.values())
     skill_total = sum(v["allocated"] for v in skills.values())
     attr_budget = inferred_attribute_budget(inferred_level) or attr_total
     skill_budget = inferred_skill_budget(inferred_level) or skill_total
     feat_records = read_feat_records(sv.path)
     detected_feats = display_names_from_feat_records(feat_records) or detect_feats_for_path(path)
+    faction_relations = read_faction_relations(sv.path)
+    faction_relation_comparison = sibling_baseline_faction_comparison(sv.path, faction_relations)
+    area_markers = read_area_markers(sv.path)
+    inventory_weight = inventory_tool.analyze_inventory_weight(sv.path)
+    equipped_items = inventory_tool.read_equipped_items(sv.path)
+    damage_estimates = build_damage_estimates(skills, equipped_items)
     return {
         "path": str(sv.path),
         "save_folder": str(sv.path.parent),
@@ -319,13 +977,21 @@ def analyze_target(path: str | Path, level: Optional[int] = None) -> Dict[str, A
         "all_feat_ids": FEAT_IDS,
         "tooltips": TOOLTIPS,
         "community_mods": COMMUNITY_MODS,
+        "game_rules": GAME_RULES,
+        "faction_relations": faction_relations,
+        "faction_relation_comparison": faction_relation_comparison,
+        "area_markers": area_markers,
+        "inventory_weight": inventory_weight,
+        "equipped_items": equipped_items,
+        "damage_estimates": damage_estimates,
         "notes": [
             "The save stores current allocated attributes/skills here, but unspent attribute/skill point offsets are not mapped.",
             "This UI preserves the loaded totals by default. If the character has unused points, enter a higher target budget to spend them without editing the unspent counters.",
             "Feat list is not read from the save; screenshot-known feats are preselected for provided reference saves and can be adjusted manually.",
+            "Faction relation visualization is heuristic/read-only. Code 0 was observed on the latest Camp Hathor hostile save; code 2 matched the earlier non-hostile SortingNightmare save.",
+            "Area marker extraction is heuristic/read-only and decodes readable loc_/frag_/npc_/xpbl_ script keys such as loc_cvw47_allHathoriansKilled.",
         ],
     }
-
 
 def _issue(kind: str, message: str, severity: str = "error", **extra: Any) -> Dict[str, Any]:
     out = {"type": kind, "severity": severity, "message": message}

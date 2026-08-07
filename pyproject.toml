@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,6 +8,7 @@ version = "0.0.4"
 description = "Local clone-first Underrail save respec editor"
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = ["nrbf>=0.1.2"]
 license = "MIT"
 authors = [{ name = "MotionCorrect" }]
 keywords = ["underrail", "save-editor", "respec", "local-tool"]
@@ -27,6 +28,7 @@ Issues = "https://github.com/MotionCorrect/underrail-respec-editor/issues"
 [project.scripts]
 underrail-respec-api = "underrail_respec_editor.web_app:main"
 underrail-respec-save = "underrail_respec_editor.save_tool:main"
+underrail-respec-inventory = "underrail_respec_editor.inventory_tool:main"
 underrail-respec-crawl-wiki = "underrail_respec_editor.wiki_crawler:main"
 
 [tool.setuptools.packages.find]
