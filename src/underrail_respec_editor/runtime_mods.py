@@ -22,6 +22,30 @@ UNDERAIL_APP_ID = "250520"
 DEFAULT_SAVES_DIR = Path.home() / "Documents" / "My Games" / "Underrail" / "Saves"
 RUNTIME_SAFETY_BACKUP_DIR = REPO_ROOT / "runtime_safety_backups"
 
+
+def default_save_dir_candidates() -> List[Path]:
+    home = Path.home()
+    candidates = [
+        DEFAULT_SAVES_DIR,
+        home / "OneDrive" / "Documents" / "My Games" / "Underrail" / "Saves",
+        home / "OneDrive" / "Documents2" / "My Games" / "Underrail" / "Saves",
+    ]
+    one_drive = os.environ.get("OneDrive") or os.environ.get("OneDriveConsumer")
+    if one_drive:
+        od = Path(one_drive)
+        candidates.extend([
+            od / "Documents" / "My Games" / "Underrail" / "Saves",
+            od / "Documents2" / "My Games" / "Underrail" / "Saves",
+        ])
+    out: List[Path] = []
+    seen = set()
+    for candidate in candidates:
+        key = str(candidate).lower()
+        if key not in seen:
+            out.append(candidate)
+            seen.add(key)
+    return out
+
 COMMON_INSTALLS = [
     Path(r"C:\Program Files (x86)\Steam\steamapps\common\Underrail"),
     Path(r"C:\Program Files\Steam\steamapps\common\Underrail"),
@@ -89,7 +113,14 @@ def resolve_game_dir(game_dir: Optional[str] = None) -> Path:
 def patcher_command() -> List[str]:
     if not PATCHER_PROJECT.is_file():
         raise ValueError(f"Runtime patcher project not found: {PATCHER_PROJECT}")
-    return ["dotnet", "run", "--project", str(PATCHER_PROJECT), "-c", "Release", "--"]
+    # Suppress NETSDK1138 end-of-life target-framework warnings from dotnet run.
+    # Those warnings are printed before the patcher's JSON and break API scan parsing.
+    return [
+        "dotnet", "run",
+        "--property:CheckEolTargetFramework=false",
+        "--project", str(PATCHER_PROJECT),
+        "-c", "Release", "--",
+    ]
 
 
 def run_patcher(command: str, game_dir: Optional[str] = None, **options: Any) -> Dict[str, Any]:
@@ -109,6 +140,15 @@ def run_patcher(command: str, game_dir: Optional[str] = None, **options: Any) ->
     try:
         return json.loads(stdout)
     except json.JSONDecodeError:
+        # dotnet run can prepend SDK warnings (for this repo's net5.0 target) before
+        # the patcher's JSON.  Keep the API usable by extracting the first JSON
+        # object from stdout when present.
+        json_start = stdout.find('{')
+        if json_start >= 0:
+            try:
+                return json.loads(stdout[json_start:])
+            except json.JSONDecodeError:
+                pass
         return {"ok": True, "text": stdout, "game_dir": str(resolved)}
 
 
@@ -134,9 +174,14 @@ def ensure_game_not_running() -> None:
 
 
 def newest_save_folder(saves_dir: Path = DEFAULT_SAVES_DIR) -> Optional[Path]:
-    if not saves_dir.is_dir():
-        return None
-    candidates = [p for p in saves_dir.iterdir() if p.is_dir() and (p / "global.dat").is_file()]
+    roots = [saves_dir]
+    if saves_dir == DEFAULT_SAVES_DIR:
+        roots = default_save_dir_candidates()
+    candidates = []
+    for root in roots:
+        if not root.is_dir():
+            continue
+        candidates.extend([p for p in root.iterdir() if p.is_dir() and (p / "global.dat").is_file()])
     if not candidates:
         return None
 

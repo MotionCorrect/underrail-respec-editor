@@ -523,8 +523,10 @@ export default function Page() {
   const [weightMultiplier, setWeightMultiplier] = useState(0.1);
   const [runtimeModSelection, setRuntimeModSelection] = useState<Record<string, boolean>>({ item_weight: true, force_restock: false, traders_buy_all: false, fastforward: false, throwing_chance_cap: false });
   const [lastRuntimeBackup, setLastRuntimeBackup] = useState('');
+  const [runtimeActionResult, setRuntimeActionResult] = useState('');
   const [runtimeStatus, setRuntimeStatus] = useState<any>({ underrail_running: false, locked: false, message: 'Underrail status not checked yet.' });
   const [mainTab, setMainTab] = useState<MainTab>('character');
+
   const hostedStaticMode = !!BASE_PATH && !API;
 
   const featList = useMemo(() => state ? Array.from(new Set([...(state.all_known_feats || []), ...(state.detected_feats || [])])).sort() : [], [state]);
@@ -632,7 +634,11 @@ export default function Page() {
     if (!mods.length) { setMessage('Select at least one runtime mod first.'); return; }
     const result = await api('/api/runtime/patch-mods', { game_dir: gameDir || undefined, mods, cap: throwingCap, weight_multiplier: weightMultiplier, dry_run: dryRun });
     if (result.backup) setLastRuntimeBackup(result.backup);
-    setMessage(dryRun ? result.text : `Patched runtime mods: ${mods.join(', ')}. Backup: ${result.backup}`);
+    const summary = dryRun
+      ? (result.text || `Dry-run completed for runtime mods: ${mods.join(', ')}`)
+      : `Patched runtime mods: ${mods.join(', ')}. Backup: ${result.backup || 'see patcher response'}`;
+    setRuntimeActionResult(summary);
+    setMessage(summary);
   }
 
   async function rollbackRuntimePatch() {
@@ -776,7 +782,7 @@ export default function Page() {
           </div>}
           <div className="modGrid">
             {[
-              ['item_weight', 'Item weight', 'Multiplies Weight and SingleItemWeight getters.'],
+              ['item_weight', 'Item weight', 'Multiplies Weight and SingleItemWeight getters. Default is 0.1x, which keeps a 250 kg carry load at about 25 kg instead of over-reducing it.'],
               ['force_restock', 'Force restock', 'Forces merchant restock boolean true when barter/restock path runs.'],
               ['traders_buy_all', 'Traders buy all', 'Disables barter item category/quantity restriction methods.'],
               ['fastforward', 'Fastforward (experimental; do not use yet)', 'Known to patch and roll back, but failed live launch smoke testing on build 21973456; kept visible as experimental for future debugging, not part of the stable click-to-patch set.'],
@@ -793,6 +799,7 @@ export default function Page() {
             <button onClick={() => patchSelectedRuntimeMods(true)} disabled={hostedStaticMode || !gameDir || runtimeLocked}>Dry-run selected</button>
             <button onClick={() => patchSelectedRuntimeMods(false)} disabled={hostedStaticMode || !gameDir || runtimeLocked}>Backup and patch selected</button>
             <button onClick={rollbackRuntimePatch} disabled={hostedStaticMode || !lastRuntimeBackup || runtimeLocked}>Rollback last runtime backup</button>
+            {runtimeActionResult && <div className="runtimeReport"><b>Last QoL patch action</b><br />{runtimeActionResult}</div>}
           </div>
         </section>
 

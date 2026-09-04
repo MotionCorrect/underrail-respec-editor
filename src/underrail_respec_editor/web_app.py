@@ -43,6 +43,38 @@ from . import inventory_tool, runtime_mods
 DEFAULT_PORT = 8765
 DEFAULT_SAVES_DIR = Path.home() / "Documents" / "My Games" / "Underrail" / "Saves"
 PACKAGE_ROOT = Path(__file__).resolve().parent
+
+
+def default_save_dir_candidates() -> List[Path]:
+    """Return likely Underrail save roots, including OneDrive-redirected Documents.
+
+    Some Windows setups redirect Documents into a nonstandard OneDrive folder
+    (for example this machine uses OneDrive\\Documents2), so the hard-coded
+    Documents path can miss real saves.
+    """
+    home = Path.home()
+    candidates = [
+        DEFAULT_SAVES_DIR,
+        home / "OneDrive" / "Documents" / "My Games" / "Underrail" / "Saves",
+        home / "OneDrive" / "Documents2" / "My Games" / "Underrail" / "Saves",
+    ]
+    one_drive = os.environ.get("OneDrive") or os.environ.get("OneDriveConsumer")
+    if one_drive:
+        od = Path(one_drive)
+        candidates.extend([
+            od / "Documents" / "My Games" / "Underrail" / "Saves",
+            od / "Documents2" / "My Games" / "Underrail" / "Saves",
+        ])
+    out: List[Path] = []
+    seen = set()
+    for candidate in candidates:
+        key = str(candidate).lower()
+        if key not in seen:
+            out.append(candidate)
+            seen.add(key)
+    return out
+
+
 DATA_DIR = PACKAGE_ROOT / "data"
 FEAT_IDS_PATH = DATA_DIR / "feat_ids.json"
 FEAT_RULES_PATH = DATA_DIR / "feat_rules.json"
@@ -1193,19 +1225,28 @@ def save_folder_mtime(folder: Path) -> float:
 
 
 def list_save_folders(root: str | Path = DEFAULT_SAVES_DIR, sort: str = "alpha") -> List[Dict[str, Any]]:
-    root = Path(root)
-    if not root.is_dir():
-        return []
+    roots = [Path(root)]
+    if Path(root) == DEFAULT_SAVES_DIR:
+        roots = default_save_dir_candidates()
     out = []
-    for child in root.iterdir():
-        if child.is_dir() and (child / "global.dat").is_file():
-            mtime = save_folder_mtime(child)
-            out.append({
-                "name": child.name,
-                "path": str(child),
-                "modified_ts": mtime,
-                "modified": datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M"),
-            })
+    seen = set()
+    for save_root in roots:
+        if not save_root.is_dir():
+            continue
+        for child in save_root.iterdir():
+            if child.is_dir() and (child / "global.dat").is_file():
+                key = str(child.resolve()).lower()
+                if key in seen:
+                    continue
+                seen.add(key)
+                mtime = save_folder_mtime(child)
+                out.append({
+                    "name": child.name,
+                    "path": str(child),
+                    "modified_ts": mtime,
+                    "modified": datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M"),
+                })
+
     if sort in {"modified", "modified_desc", "mtime"}:
         out.sort(key=lambda x: (-x["modified_ts"], x["name"].lower()))
     elif sort in {"modified_asc", "oldest"}:
